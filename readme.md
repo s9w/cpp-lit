@@ -6,16 +6,18 @@ This project only looks at MSVC (the latest as of writing: 16.8.0 Preview 2). Al
 
 These C++20 headers aren't shipped yet: `barrier`, `bit`, `coroutine`, `format`, `latch`, `numbers`, `semaphore`, `source_location`, `span`, `stop_token`, `syncstream`.
 
-The measurements are done on a basically empty single file project that includes one of the headers above at a time and is compiled with MSBuild. Both Release and Debug configurations times are taken 10 times and averaged to avoid outliers. The running of the builds and time-taking is done with a PowerShell script. A little interpreter C++ program was written to parse the timing files and calculate mean and standard deviation. The final visualization was done with a Matplotlib script.
+The measurements are done on a basically empty single file project that includes one of the headers above at a time and is compiled with MSBuild. The baseline (or "null") measurement contains no includes. The times reported below are the difference between those two, the bar width is equal to the standard deviation.
+
+Both Release and Debug configurations times are taken 10 times and averaged to avoid outliers. The running of the builds and time-taking is done with a PowerShell script. A little interpreter C++ program was written to parse the timing files and calculate mean and standard deviation. The final visualization was done with a Matplotlib script.
 
 If you want to run the measurements yourself, you have to run
 ```
 .\run_numbers.ps1 # this takes about 25 minutes in my machine
 .\parse_numbers.ps1
 ```
-And then plot however you like. The notebook is under `plotting`.
+And then plot however you like. The plot I used is under `plotting`.
 
-## result
+## Results
 
 [html version of results](http://s9w.io/cppslit/figure.html). Image version:
 
