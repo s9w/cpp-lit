@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+
+  <ItemDefinitionGroup Condition="'$(i_concepts)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_concepts</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cstdlib)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cstdlib</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_csignal)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_csignal</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_csetjmp)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_csetjmp</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cstdarg)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cstdarg</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_typeinfo)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_typeinfo</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_typeindex)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_typeindex</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_type_traits)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_type_traits</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_bitset)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_bitset</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_functional)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_functional</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_utility)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_utility</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_ctime)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_ctime</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_chrono)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_chrono</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cstddef)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cstddef</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_initializer_list)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_initializer_list</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_tuple)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_tuple</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_any)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_any</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_optional)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_optional</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_variant)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_variant</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_compare)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_compare</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_version)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_version</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_new)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_new</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_memory)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_memory</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_scoped_allocator)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_scoped_allocator</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_memory_resource)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_memory_resource</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_climits)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_climits</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cfloat)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cfloat</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cstdint)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cstdint</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cinttypes)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cinttypes</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_limits)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_limits</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_exception)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_exception</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_stdexcept)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_stdexcept</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cassert)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cassert</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_system_error)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_system_error</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cerrno)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cerrno</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cctype)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cctype</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cwctype)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cwctype</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cstring)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cstring</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cwchar)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cwchar</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cuchar)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cuchar</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_string)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_string</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_string_view)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_string_view</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_charconv)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_charconv</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_array)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_array</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_vector)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_vector</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_deque)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_deque</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_list)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_list</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_forward_list)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_forward_list</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_set)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_set</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_map)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_map</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_unordered_set)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_unordered_set</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_unordered_map)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_unordered_map</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_stack)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_stack</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_queue)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_queue</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_iterator)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_iterator</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_algorithm)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_algorithm</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_execution)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_execution</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cmath)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cmath</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_complex)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_complex</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_valarray)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_valarray</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_random)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_random</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_numeric)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_numeric</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_ratio)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_ratio</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cfenv)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cfenv</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_locale)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_locale</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_clocale)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_clocale</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_iosfwd)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_iosfwd</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_ios)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_ios</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_istream)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_istream</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_ostream)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_ostream</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_iostream)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_iostream</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_fstream)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_fstream</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_sstream)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_sstream</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_iomanip)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_iomanip</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_streambuf)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_streambuf</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_cstdio)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_cstdio</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_filesystem)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_filesystem</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_regex)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_regex</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_atomic)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_atomic</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_thread)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_thread</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_mutex)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_mutex</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_shared_mutex)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_shared_mutex</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_future)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_future</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_condition_variable)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_condition_variable</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_ranges)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_ranges</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+
+  <ItemGroup />
+</Project>
