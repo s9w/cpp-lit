@@ -15,6 +15,8 @@ Note that these C++20 headers aren't shipped yet but will be added as soon as th
 
 My personal conclusion: Modules are fast! And string is unfortunately as expensive as it is ubiquitous.
 
+Both Release and Debug configurations times are taken 10 times and averaged to avoid outliers. The running of the builds and time-taking is done with a PowerShell script. A little interpreter C++ program was written to parse the timing files and calculate mean and standard deviation. The final visualization was done with a Matplotlib script.
+
 The measurements are done on a basically empty single file project that includes one of the headers above at a time and is compiled with `CL.exe`. The baseline (or "null") measurement contains no includes. The times reported below are the difference between those two. Both Release and Debug configurations times are taken multiple times and averaged to avoid outliers. The bar width is equal to the standard deviation.
 
 If you want to run the measurements yourself, you have to run
