@@ -8,14 +8,14 @@ Only Visual Studio (the latest as of writing: 16.8.0 Preview 2) is used as a pla
 ```
 I only included a couple of boost libraries since I'm not very familiar with them, and what to include is not always trivial. Note that the boost figure is on a different axis since the include times are so much higher than the rest that I didn't want to combine them.
 
-Note that these C++20 headers aren't shipped yet but will be added as soon as they do: `barrier`, `bit`, `coroutine`, `format`, `latch`, `numbers`, `semaphore`, `source_location`, `span`, `stop_token`, `syncstream`.
+Note that these C++20 headers aren't shipped yet but will be added as soon as they do: `barrier`, `format`, `latch`, `semaphore`, `source_location`, `stop_token`, `syncstream`.
 
 ![results](http://s9w.io/cpp-lit/figure.png)
 ![results](http://s9w.io/cpp-lit/boost.png)
 
 My personal conclusion: Modules are fast! And string is unfortunately as expensive as it is ubiquitous.
 
-Both Release and Debug configurations times are taken 10 times and averaged to avoid outliers. The running of the builds and time-taking is done with a PowerShell script. A little interpreter C++ program was written to parse the timing files and calculate mean and standard deviation. The final visualization was done with a Matplotlib script.
+Both Release and Debug configurations times are taken multiple times and averaged to avoid outliers. The running of the builds and time-taking is done with a PowerShell script. A little interpreter C++ program was written to parse the timing files and calculate mean and standard deviation. The final visualization was done with a Matplotlib script.
 
 The measurements are done on a basically empty single file project that includes one of the headers above at a time and is compiled with `CL.exe`. The baseline (or "null") measurement contains no includes. The times reported below are the difference between those two. Both Release and Debug configurations times are taken multiple times and averaged to avoid outliers. The bar width is equal to the standard deviation.
 

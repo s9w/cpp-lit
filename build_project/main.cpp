@@ -338,6 +338,25 @@
 #include <ranges>
 #endif
 
+
+#ifdef i_bit
+#include <bit>
+#endif
+
+#ifdef i_coroutine
+#include <coroutine>
+#endif
+
+#ifdef i_numbers
+#include <numbers>
+#endif
+
+#ifdef i_span
+#include <span>
+#endif
+
+
+
 #ifdef i_windows
 #include <windows.h>
 #endif
