@@ -48,21 +48,17 @@ sort_data(misc_data)
 sort_data(std_modules_data)
 sort_data(boost_data)
 
-def create_plot(datasets, output_fn):
+def create_plot(datasets, output_fn, mode):
     number_of_entries = sum([len(dataset["names"]) for dataset in datasets])
-    fig = plt.figure(figsize=(14, 1 + 0.2 * number_of_entries))
+    fig = plt.figure(figsize=(7, 1 + 0.2 * number_of_entries))
 
-    def plot_dataset(ax, y_pos, names, means, errors, colors, plot_ticks):
+    def plot_dataset(ax, y_pos, names, means, errors, colors):
         start_vals = means - errors/2.0
         _ = ax.barh(y_pos, left=start_vals, width=errors, color=colors, alpha=0.8)
-        if(plot_ticks):
-            _ = plt.yticks(y_pos, names, fontfamily="monospace", ha = 'left')
-            ax.get_yaxis().set_tick_params(pad=110)
-        else:
-            _ = plt.yticks(y_pos, "")
-            ax.yaxis.tick_right()
+        _ = plt.yticks(y_pos, names, fontfamily="monospace", ha = 'left')
+        ax.get_yaxis().set_tick_params(pad=110)
     
-    def plot_datasets(ax, datasets, mode, plot_ticks):
+    def plot_datasets(ax, datasets, mode):
         names = []
         values = np.empty(0)
         errors = np.empty(0)
@@ -80,7 +76,7 @@ def create_plot(datasets, output_fn):
             y_offset += dataset_size + 1
         ax.set_xlabel("Include time [seconds]")
         ax.margins(0)
-        plot_dataset(ax, y_pos, names, values, errors, plot_colors, plot_ticks)
+        plot_dataset(ax, y_pos, names, values, errors, plot_colors)
         ax.set_axisbelow(True)
         ax.grid(axis="y")
         ax.set_title(mode)
@@ -90,16 +86,15 @@ def create_plot(datasets, output_fn):
         ax.spines["left"].set_visible(False)
         ax.set_xlim(0, ax.get_xlim()[1])
 
-    ax = fig.add_subplot(121)
-    plot_datasets(ax, datasets, "debug", False)
-
-    ax = fig.add_subplot(122)
-    plot_datasets(ax, datasets, "release", True)
+    ax = fig.add_subplot(111)
+    plot_datasets(ax, datasets, mode)
 
     fig.tight_layout()
 
     # mpld3.save_html(fig, output_fn+".html")
-    fig.savefig(output_fn+".png")
+    fig.savefig(output_fn + "_" + mode +".png")
 
-create_plot([std_data, std_modules_data, misc_data], "figure")
-create_plot([boost_data], "boost")
+create_plot([std_data, std_modules_data, misc_data], "figure", "debug")
+create_plot([std_data, std_modules_data, misc_data], "figure", "release")
+create_plot([boost_data], "boost", "debug")
+create_plot([boost_data], "boost", "release")

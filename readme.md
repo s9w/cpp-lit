@@ -1,7 +1,7 @@
 # C++ library include times (CPP-LIT :fire:)
-This repo answers the question: how much time is added to my compile time by a single inclusion of header X? Featuring *all* C++ Standard Library headers, C++20 [Standard Library modules](https://docs.microsoft.com/en-us/cpp/cpp/modules-cpp?view=vs-2019) as comparison, some boost headers and `windows.h`.
+This repo answers the question: how much time is added to my compile time by a single inclusion of header X? Featuring *all* C++ Standard Library headers, C++20 [Standard Library modules](https://docs.microsoft.com/en-us/cpp/cpp/modules-cpp?view=vs-2019) as comparison, some boost headers and `windows.h`. Visual Studio (the latest as of writing: 16.8.0 Preview 2) is used as a platform.
 
-Only Visual Studio (the latest as of writing: 16.8.0 Preview 2) is used as a platform. `windows_mal` refers to the ubiquitous
+`windows_mal` refers to the ubiquitous
 ```
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -13,11 +13,11 @@ Note that these C++20 headers aren't shipped yet but will be added as soon as th
 ![results](http://s9w.io/cpp-lit/figure_release.png)
 ![results](http://s9w.io/cpp-lit/boost_release.png)
 
-These are the results of for release mode. Debug is very similar - they can be found [here](http://s9w.io/cpp-lit/figure_debug.png) and [here](http://s9w.io/cpp-lit/boost_debug.png).
+These are the results for release mode. Debug is very similar - they can be found [here](http://s9w.io/cpp-lit/figure_debug.png) and [here](http://s9w.io/cpp-lit/boost_debug.png).
 
 My personal conclusion: Modules are fast! And string is unfortunately as expensive as it is ubiquitous.
 
-Both Release and Debug configurations times are taken multiple times and averaged to avoid outliers. The running of the builds and time-taking is done with a PowerShell script. A little interpreter C++ program was written to parse the timing files and calculate mean and standard deviation. The final visualization was done with a Matplotlib script.
+Both Release and Debug configuration times are taken multiple times and averaged to avoid outliers. The running of the builds and time-taking is done with a PowerShell script. A little interpreter C++ program was written to parse the timing files and calculate mean and standard deviation. The final visualization was done with a Matplotlib script.
 
 The measurements are done on a basically empty single file project that includes one of the headers above at a time and is compiled with `CL.exe`. The baseline (or "null") measurement contains no includes. The times reported below are the difference between those two. Both Release and Debug configurations times are taken multiple times and averaged to avoid outliers. The bar width is equal to the standard deviation.
 
