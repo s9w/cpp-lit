@@ -338,6 +338,15 @@
 #include <ranges>
 #endif
 
+#ifdef i_windows
+#include <windows.h>
+#endif
+
+#ifdef i_windows_mal
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
+
 
 int main() {
    return 0;

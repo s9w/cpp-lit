@@ -429,6 +429,16 @@
       <AdditionalOptions>/Di_ranges</AdditionalOptions>
    </ClCompile>
 </ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_windows)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_windows</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
+<ItemDefinitionGroup Condition="'$(i_windows_mal)' != ''">
+   <ClCompile>
+      <AdditionalOptions>/Di_windows_mal</AdditionalOptions>
+   </ClCompile>
+</ItemDefinitionGroup>
 
   <ItemGroup />
 </Project>
