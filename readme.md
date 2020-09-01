@@ -11,7 +11,7 @@ I only included a couple of boost libraries since I'm not very familiar with the
 Note that these C++20 headers aren't shipped yet but will be added as soon as they do: `barrier`, `format`, `latch`, `semaphore`, `source_location`, `stop_token`, `syncstream`.
 
 ![results](http://s9w.io/cpp-lit/figure_release.png)
-![results](http://s9w.io/cpp-lit/boost-release.png)
+![results](http://s9w.io/cpp-lit/boost_release.png)
 
 These are the results of for release mode. Debug is very similar - they can be found [here](http://s9w.io/cpp-lit/figure_debug.png) and [here](http://s9w.io/cpp-lit/boost_debug.png).
 
