@@ -10,8 +10,8 @@ I only included a couple of boost libraries since I'm not very familiar with the
 
 Note that these C++20 headers aren't shipped yet but will be added as soon as they do: `barrier`, `bit`, `coroutine`, `format`, `latch`, `numbers`, `semaphore`, `source_location`, `span`, `stop_token`, `syncstream`.
 
-![results](http://s9w.io/cppslit/figure.png)
-![results](http://s9w.io/cppslit/boost.png)
+![results](http://s9w.io/cpp-lit/figure.png)
+![results](http://s9w.io/cpp-lit/boost.png)
 
 The measurements are done on a basically empty single file project that includes one of the headers above at a time and is compiled with MSBuild. The baseline (or "null") measurement contains no includes. The times reported below are the difference between those two. Both Release and Debug configurations times are taken multiple times and averaged to avoid outliers. The bar width is equal to the standard deviation.
 
