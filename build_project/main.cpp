@@ -419,6 +419,10 @@ import std.core;
 #include <boost/any.hpp>
 #endif
 
+#ifdef i_boost_hana
+#include <boost/hana.hpp>
+#endif
+
 int main() {
    return 0;
 }
