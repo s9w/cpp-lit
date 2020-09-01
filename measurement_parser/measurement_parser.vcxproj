@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{32bc95a0-2be4-4477-944c-619038babc5d}</ProjectGuid>
+    <ProjectGuid>{237c97f5-3eb7-4cca-a81d-460562317fd6}</ProjectGuid>
     <RootNamespace>measurementparser</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
