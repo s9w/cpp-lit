@@ -367,7 +367,38 @@ import std.threading;
 import std.core;
 #endif
 
-import std.threading;
+#ifdef i_boost_variant2
+#include <boost/variant2/variant.hpp>
+#endif
+
+#ifdef i_boost_optional
+#include <boost/optional/optional.hpp>
+#endif
+
+#ifdef i_boost_uuid
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#endif
+
+#ifdef i_boost_asio
+#include <boost/asio.hpp>
+#endif
+
+#ifdef i_boost_atomic
+#include <boost/atomic.hpp>
+#endif
+
+#ifdef i_boost_beast
+#include <boost/beast.hpp>
+#endif
+
+#ifdef i_boost_outcome
+#include <boost/outcome/outcome.hpp>
+#endif
+
+#ifdef i_boost_any
+#include <boost/any.hpp>
+#endif
 
 int main() {
    return 0;
