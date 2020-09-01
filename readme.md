@@ -13,6 +13,8 @@ Note that these C++20 headers aren't shipped yet but will be added as soon as th
 ![results](http://s9w.io/cpp-lit/figure.png)
 ![results](http://s9w.io/cpp-lit/boost.png)
 
+My personal conclusion: Modules are fast! And string is unfortunately as expensive as it is ubiquitous.
+
 The measurements are done on a basically empty single file project that includes one of the headers above at a time and is compiled with `CL.exe`. The baseline (or "null") measurement contains no includes. The times reported below are the difference between those two. Both Release and Debug configurations times are taken multiple times and averaged to avoid outliers. The bar width is equal to the standard deviation.
 
 If you want to run the measurements yourself, you have to run
