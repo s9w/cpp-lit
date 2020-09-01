@@ -347,6 +347,27 @@
 #include <windows.h>
 #endif
 
+#ifdef i_std_regex
+import std.regex;
+#endif
+
+#ifdef i_std_filesystem
+import std.filesystem;
+#endif
+
+#ifdef i_std_memory
+import std.memory;
+#endif
+
+#ifdef i_std_threading
+import std.threading;
+#endif
+
+#ifdef i_std_core
+import std.core;
+#endif
+
+import std.threading;
 
 int main() {
    return 0;

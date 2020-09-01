@@ -1,6 +1,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <numeric>
 #include <regex>
 #include <string>
@@ -11,6 +12,10 @@ namespace parser {
    double get_mean(const std::vector<double>& values) {
       const double sum = std::accumulate(values.cbegin(), values.cend(), 0.0);
       return sum / static_cast<int>(values.size());
+   }
+
+   double get_median(const std::vector<double>& values) {
+      return values[values.size() / 2];
    }
 
 
@@ -93,12 +98,14 @@ namespace parser {
    };
 
    struct HeaderMeasurement {
+      std::string category;
       std::string header_name;
       Measurement release, debug;
    };
 
    auto get_measurement(const std::vector<double>& times) ->Measurement {
       const double mean = get_mean(times);
+      //const double median = get_median(times);
       const double std_dev = get_std_dev(times, mean);
       return { mean, std_dev };
    }
@@ -112,9 +119,8 @@ namespace parser {
          const fs::path path = entry.path();
          const Measurement measurement = get_measurement(get_seconds_from_file(path));
          const auto stem_split = get_split_string(path.stem().string(), "-");
-         const std::string header_name = stem_split[0];
-         if (header_name == "cstdlib")
-            int sss = 99;
+         const std::string category = stem_split[0];
+         const std::string header_name = stem_split[1];
          if (header_name == "warmup")
             continue;
 
@@ -122,14 +128,14 @@ namespace parser {
             measurements.begin(),
             measurements.end(),
             [&](const HeaderMeasurement& measurement) {
-               return measurement.header_name == header_name;
+               return measurement.header_name == header_name && measurement.category == category;
             }
          );
          if (it == measurements.end()) {
-            measurements.emplace_back(HeaderMeasurement{ header_name, 0.0, 0.0 });
+            measurements.emplace_back(HeaderMeasurement{ category, header_name, 0.0, 0.0 });
             it = measurements.end() - 1;
          }
-         if (stem_split[1] == "Release")
+         if (stem_split[2] == "Release")
             it->release = measurement;
          else
             it->debug = measurement;
@@ -138,22 +144,26 @@ namespace parser {
    }
 
 
-   void process_files(const fs::path& input_path, const fs::path& output_path) {
-      std::vector<HeaderMeasurement> measurements = get_measurements(input_path);
-      std::sort(
-         std::begin(measurements),
-         std::end(measurements),
-         [](const HeaderMeasurement& a, const HeaderMeasurement& b) {
-            return a.release.mean > b.release.mean;
+   auto get_categorized_measurements(const std::vector<HeaderMeasurement>& measurements) -> std::map<std::string, std::vector<HeaderMeasurement>> {
+      std::map<std::string, std::vector<HeaderMeasurement>> sorted;
+      for (const HeaderMeasurement& measurement : measurements)
+         sorted[measurement.category].emplace_back(measurement);
+      return sorted;
+   }
+
+
+   void process_files(const fs::path& input_path, const fs::path& output_folder) {
+      const auto measurements = get_categorized_measurements(get_measurements(input_path));
+      for (const auto& [category, measurements] : measurements) {
+         fs::path output_path = output_folder / ("data_" + category + ".txt" );
+         std::ofstream file_out(output_path);
+         file_out << "#header_name release_mean release_stddev debug_mean debug_stddev" << std::endl;
+         for (const HeaderMeasurement& measurement : measurements) {
+            file_out << measurement.header_name << " ";
+            file_out << measurement.release.mean << " " << measurement.release.std_dev << " ";
+            file_out << measurement.debug.mean << " " << measurement.debug.std_dev;
+            file_out << std::endl;
          }
-      );
-      std::ofstream file_out(output_path);
-      file_out << "#header_name release_mean release_stddev debug_mean debug_stddev" << std::endl;
-      for (const HeaderMeasurement& measurement : measurements) {
-         file_out << measurement.header_name << " ";
-         file_out << measurement.release.mean << " " << measurement.release.std_dev << " ";
-         file_out << measurement.debug.mean << " " << measurement.debug.std_dev;
-         file_out << std::endl;
       }
    }
 
