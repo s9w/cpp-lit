@@ -1,29 +1,37 @@
 # C++ library include times (CPP-LIT :fire:)
-This repo answers the question: how much time is added to my compile time by a single inclusion of header X? Featuring *all* C++ Standard Library headers, C++20 [Standard Library modules](https://docs.microsoft.com/en-us/cpp/cpp/modules-cpp?view=vs-2019) as comparison, some boost headers and `windows.h`. Visual Studio (the latest as of writing: 16.8.0 Preview 2) is used as a platform.
+This repo answers the question: how much time is added to my compile time by a single inclusion of header X? Featuring *all* C++ Standard Library headers, their C++20 [module versions](https://docs.microsoft.com/en-us/cpp/cpp/modules-cpp?view=vs-2019) as comparison, some boost headers, `windows.h` and much more. Visual Studio (the latest as of writing: 16.8.0 Preview 2) is used as a platform.
 
-`windows_mal` refers to the ubiquitous
+`windows_mal` refers to the common
 ```
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 ```
-I only included a couple of boost libraries since I'm not very familiar with them, and what to include is not always trivial. Note that the boost figure is on a different axis since the include times are so much higher than the rest that I didn't want to combine them.
+
+Note that I've split the more expensive includes in a separate image with a differen x-range to not crush the important standard headers.
+
+- Boost was measured in v1.74.0
+- `date` and `tz` refer to [HowardHinnant/date](https://github.com/HowardHinnant/date).
+- [tracy](https://github.com/wolfpld/tracy) v0.7.1, obviously with the `TRACY_ENABLE` define.
+- [spdlog](https://github.com/gabime/spdlog) v1.8.0 using header-only version with only `spdlog.h` included. Readme recommends to use the static lib version instead for faster compile times.
+- [fmt](https://github.com/fmtlib/fmt) v7.0.3 including only `fmt/core.h`.
+- [doctest](https://github.com/onqtam/doctest) v2.4.0. Note that doctest needs to be compiled with an implementation define once, which takes much longer. But the typical include scattered among a project would be without that macro - that's being reported here
+- [Dear ImGui](https://github.com/ocornut/imgui) v1.78.
+- [JSON for Modern C++](https://github.com/nlohmann/json) v3.9.1. Note that this is split into the main header (nl_json - `json.hpp`) and the forward include header (nl_json_fwd - `json_fwd.hpp`). The latter is what you would include often. It might in practice be much faster to include this since its include time is dominated by a bunch of standard library headers which may be already included in your translation unit or PCH.
+
+The compile time of several 3rd party headers is dominated by standard headers. In practice the compile time might be much lower if the translation unit already includes some of those. Future versions of CPP-LIT may include another data point where the baseline already includes all standard headers.
 
 Note that these C++20 headers aren't shipped yet but will be added as soon as they do: `barrier`, `format`, `latch`, `semaphore`, `source_location`, `stop_token`, `syncstream`.
 
-![results](http://s9w.io/cpp-lit/figure_release.png)
-![results](http://s9w.io/cpp-lit/boost_release.png)
+![results](http://s9w.io/cpp-lit/release.png)
+![results](http://s9w.io/cpp-lit/expensive_release.png)
 
-These are the results for release mode. Debug is very similar - they can be found [here](http://s9w.io/cpp-lit/figure_debug.png) and [here](http://s9w.io/cpp-lit/boost_debug.png).
+These are the results for release mode. Debug is very similar - they can be found [here](http://s9w.io/cpp-lit/debug.png) and [here](http://s9w.io/cpp-lit/expensive_debug.png).
 
-My personal conclusion: Modules are fast! And string is unfortunately as expensive as it is ubiquitous.
+The measurements are done on a basically empty single file project that includes one of the headers above at a time and is compiled with `CL.exe`. The baseline (or "null") measurement contains no includes. The plotted times are the difference between those two. Both Release and Debug configuration times are taken multiple times and averaged to avoid outliers. Standard deviations are computed but are small enough to be omited. Note that the absolute times obviously depend on the used hardware.
 
-Both Release and Debug configuration times are taken multiple times and averaged to avoid outliers. The running of the builds and time-taking is done with a PowerShell script. A little interpreter C++ program was written to parse the timing files and calculate mean and standard deviation. The final visualization was done with a Matplotlib script.
-
-The measurements are done on a basically empty single file project that includes one of the headers above at a time and is compiled with `CL.exe`. The baseline (or "null") measurement contains no includes. The times reported below are the difference between those two. Both Release and Debug configurations times are taken multiple times and averaged to avoid outliers. The bar width is equal to the standard deviation.
-
-If you want to run the measurements yourself, you have to run
+If you want to run the measurements yourself:
 ```
 .\run_numbers.ps1 # this takes about 5 minutes on my machine, adjust paths
 .\parse_numbers.ps1
 ```
-And then plot however you like. The plotting script I used is under `plotting`.
+And plot however you like. The plotting script I used is under `plotting`.

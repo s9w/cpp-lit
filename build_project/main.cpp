@@ -423,12 +423,41 @@ import std.core;
 #include <boost/hana.hpp>
 #endif
 
-#ifdef i_date
+#ifdef i_date_date
 #include <date/date.h>
 #endif
 
-#ifdef i_tz
+#ifdef i_date_tz
 #include <date/tz.h>
+#endif
+
+#ifdef i_tracy
+#define TRACY_ENABLE
+#include <tracy.hpp>
+#endif
+
+#ifdef i_spdlog
+#include <spdlog/spdlog.h>
+#endif
+
+#ifdef i_fmt
+#include <fmt/core.h>
+#endif
+
+#ifdef i_doctest
+#include <doctest/doctest.h>
+#endif
+
+#ifdef i_imgui
+#include <imgui.h>
+#endif
+
+#ifdef i_nl_json
+#include <nlohmann/json.hpp>
+#endif
+
+#ifdef i_nl_json_fwd
+#include <nlohmann/json_fwd.hpp>
 #endif
 
 int main() {

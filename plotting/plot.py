@@ -2,16 +2,27 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import os.path
 import numpy as np
-import mpld3
-
 def get_pretty_name(name):
     if(name.startswith("std_")):
         return "std." + name[4:]
     elif(name.startswith("boost_")):
         return "boost/" + name[6:]
+    elif(name.startswith("date_")):
+        return "date/" + name[5:]
     return name
 
-def load_data(fn, color, release_baseline=0, debug_baseline=0):
+def get_dataset_slice(dataset, indices):
+    return {
+        "names": dataset["names"][indices],
+        "release_mean": dataset["release_mean"][indices],
+        "release_sd": dataset["release_sd"][indices],
+        "debug_mean": dataset["debug_mean"][indices],
+        "debug_sd": dataset["debug_sd"][indices],
+        "color": dataset["color"]
+    }
+
+
+def load_data(fn, color, sort=True, release_baseline=0, debug_baseline=0):
     if not os.path.isfile(fn):
         return None
     comments = ["#"]
@@ -33,7 +44,8 @@ def load_data(fn, color, release_baseline=0, debug_baseline=0):
         "debug_sd": debug_sd,
         "color": color
     }
-    sort_data(ret_value)
+    if(sort):
+        sort_data(ret_value)
     return ret_value
 
 def sort_data(data):
@@ -49,23 +61,28 @@ baseline_debug = null_data["debug_mean"][baseline_index]
 
 datasets = []
 std_data = load_data("data_std.txt", "blue", baseline_release, baseline_debug)
-std_modules_data = load_data("data_std_modules.txt", "green", baseline_release, baseline_debug)
-misc_data = load_data("data_misc.txt", "red", baseline_release, baseline_debug)
-boost_data = load_data("data_boost.txt", "orange", baseline_release, baseline_debug)
-if(std_data is not None):
-    datasets.append(std_data)
-if(std_modules_data is not None):
-    datasets.append(std_modules_data)
-if(misc_data is not None):
-    datasets.append(misc_data)
+std_modules_data = load_data("data_std_modules.txt", "blue", baseline_release, baseline_debug)
+boost_data = load_data("data_boost.txt", "black", baseline_release, baseline_debug)
+misc_data = load_data("data_misc.txt", "black", False, baseline_release, baseline_debug)
 
-def create_plot(datasets, output_fn, mode):
-    number_of_entries = sum([len(dataset["names"]) for dataset in datasets])
-    fig = plt.figure(figsize=(7, 1 + 0.2 * number_of_entries))
+expensive_datasets = []
+cheap_datasets = []
+expensive_time_cutoff = 0.6
+for dataset in [std_data, std_modules_data, boost_data, misc_data]:
+    if dataset is None:
+        continue
+    exp_indices = np.where(dataset["release_mean"] > expensive_time_cutoff)
+    normal_indices = np.where(dataset["release_mean"] <= expensive_time_cutoff)
+    cheap_datasets.append(get_dataset_slice(dataset, normal_indices))
+    if(exp_indices[0].size == 0):
+        continue
+    expensive_datasets.append(get_dataset_slice(dataset, exp_indices))
 
+def create_plot(datasets, fn_prefix, mode):
     def plot_dataset(ax, y_pos, names, means, errors, colors):
-        start_vals = means - errors/2.0
-        _ = ax.barh(y_pos, left=start_vals, width=errors, color=colors, alpha=0.8)
+        _ = ax.scatter(means, y_pos, s=40, c=colors)
+        # _ = ax.errorbar(means, y_pos,xerr=errors, linestyle='none', capsize=2)
+        
         _ = plt.yticks(y_pos, names, fontfamily="monospace", ha = 'left')
         ax.get_yaxis().set_tick_params(pad=110)
     
@@ -77,6 +94,7 @@ def create_plot(datasets, output_fn, mode):
 
         y_offset = 0
         y_pos = []
+        
         for dataset in datasets:
             dataset_size = len(dataset["names"])
             names.extend(dataset["names"].tolist())
@@ -95,18 +113,19 @@ def create_plot(datasets, output_fn, mode):
         ax.spines["top"].set_visible(False)
         ax.spines["bottom"].set_visible(False)
         ax.spines["left"].set_visible(False)
-        ax.set_xlim(0, ax.get_xlim()[1])
+        ax.set_xlim(-0.01, ax.get_xlim()[1]+0.02)
+        ax.axvline(x=0, linewidth=0.5, color="black", zorder=0)
+        ax.set_ylim(ax.get_ylim()[0]-1, ax.get_ylim()[1]+1)
 
+    number_of_entries = sum([len(dataset["names"]) for dataset in datasets])
+    fig = plt.figure(figsize=(7, 1 + 0.2 * number_of_entries))
     ax = fig.add_subplot(111)
     plot_datasets(ax, datasets, mode)
 
     fig.tight_layout()
+    fig.savefig(fn_prefix + mode +".png")
 
-    # mpld3.save_html(fig, output_fn+".html")
-    fig.savefig(output_fn + "_" + mode +".png")
-
-create_plot(datasets, "figure", "debug")
-create_plot(datasets, "figure", "release")
-if(boost_data is not None):
-    create_plot([boost_data], "boost", "debug")
-    create_plot([boost_data], "boost", "release")
+create_plot(cheap_datasets, "", "debug")
+create_plot(cheap_datasets, "", "release")
+create_plot(expensive_datasets, "expensive_", "debug")
+create_plot(expensive_datasets, "expensive_", "release")
