@@ -423,6 +423,14 @@ import std.core;
 #include <boost/hana.hpp>
 #endif
 
+#ifdef i_date
+#include <date/date.h>
+#endif
+
+#ifdef i_tz
+#include <date/tz.h>
+#endif
+
 int main() {
    return 0;
 }

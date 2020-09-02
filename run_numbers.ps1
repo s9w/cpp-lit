@@ -3,11 +3,12 @@ $vcvars_dir = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\
 
 $repetitions = 30
 $boost_dir = "D:\boost_1_74_0"
-$use_windows = $false
+# $date_dir = ""
+$use_windows = $true
 $use_std_modules = $false
 $use_std_headers = $false
 
-"use_std_headers: {0}, use_std_modules: {1}, use_windows: {2}, boost: {3}" -f $use_std_headers, $use_std_modules, $use_windows, (Test-Path variable:boost_dir)
+"use_std_headers: {0}, use_std_modules: {1}, use_windows: {2}, boost: {3}, date: {4}" -f $use_std_headers, $use_std_modules, $use_windows, (Test-Path variable:boost_dir), (Test-Path variable:date_dir)
 
 function Invoke-CmdScript {
   param(
@@ -32,21 +33,25 @@ $include_dirs = @()
 if(Test-Path variable:boost_dir){
    $include_dirs += $boost_dir
 }
+if(Test-Path variable:date_dir){
+   $include_dirs += $date_dir
+}
 $include_statement = ""
 Foreach($include_dir in $include_dirs){
-   $include_statement += "/I" + $include_dir + " "
+   $include_statement += "/I""" + $include_dir + """ "
 }
 Write-Output "include statement: " $include_statement
 
 function run_meas($category, $inc, $repeats, $config)
 {
    For ($i=0; $i -lt $repeats; $i++){
+      $cl_command = "CL " + $include_statement + "/O2 /MD /D " + "i_" + $inc + " /std:c++latest /experimental:module /EHsc /nologo build_project/main.cpp /link /MACHINE:X64"
       Measure-Command {
          if($config -eq "Release"){
-            & CL /I$boost_dir /O2 /MD /D i_$inc /std:c++latest /experimental:module /EHsc /nologo build_project/main.cpp /link /MACHINE:X64
+            Invoke-Expression $cl_command
          }
          else{
-            & CL /I$boost_dir /Od /MDd /D i_$inc /std:c++latest /experimental:module /EHsc /nologo build_project/main.cpp /link /MACHINE:X64
+            Invoke-Expression $cl_command
          }
          } | Out-File -FilePath "measurements\$category-$inc-$config.txt" -Append -Encoding utf8
    }
@@ -59,6 +64,9 @@ $boost_headers = "boost_variant2","boost_optional","boost_uuid","boost_asio","bo
 $misc_headers = @("null")
 if($use_windows){
    $misc_headers += "windows","windows_mal"
+}
+if(Test-Path variable:date_dir){
+   $misc_headers += "date","tz"
 }
 
 if(Test-Path measurements){
