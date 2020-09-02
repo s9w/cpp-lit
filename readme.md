@@ -23,7 +23,7 @@ The compile time of several 3rd party headers is dominated by standard headers. 
 Note that these C++20 headers aren't shipped yet but will be added as soon as they do: `barrier`, `format`, `latch`, `semaphore`, `source_location`, `stop_token`, `syncstream`.
 
 ![results](http://s9w.io/cpp-lit/lit.png)
-![results](http://s9w.io/cpp-lit/lit-expensive.png)
+![results](http://s9w.io/cpp-lit/lit_expensive.png)
 
 All reported times are based on release builds. The measurements are done on a basically empty single file project that includes one of the headers above at a time and is compiled with `CL.exe`. The baseline (or "null") measurement contains no includes. The plotted times are the difference between those two. All times averaged over many repetitions to avoid outliers. Standard deviations are computed but are small enough to be omited. Note that the absolute times obviously depend on the used hardware.
 
