@@ -16,7 +16,7 @@ Note that I've split the more expensive includes in a separate image with a diff
 - [fmt](https://github.com/fmtlib/fmt) v7.0.3 including only `fmt/core.h`.
 - [doctest](https://github.com/onqtam/doctest) v2.4.0. Note that doctest needs to be compiled with an implementation define once, which takes much longer. But the typical include scattered among a project would be without that macro - that's being reported here
 - [Dear ImGui](https://github.com/ocornut/imgui) v1.78.
-- [JSON for Modern C++](https://github.com/nlohmann/json) v3.9.1. Note that this is split into the main header (nl_json - `json.hpp`) and the forward include header (nl_json_fwd - `json_fwd.hpp`). The latter is what you would include often. It might in practice be much faster to include this since its include time is dominated by a bunch of standard library headers which may be already included in your translation unit or PCH.
+- [JSON for Modern C++](https://github.com/nlohmann/json) v3.9.1. Note that this is split into the main header (nl_json - `json.hpp`) and the forward include header (nl_json_fwd - `json_fwd.hpp`). The latter is what you would include often.
 
 The compile time of several 3rd party headers is dominated by standard headers. In practice the compile time might be much lower if the translation unit already includes some of those. Future versions of CPP-LIT may include another data point where the baseline already includes all standard headers.
 
