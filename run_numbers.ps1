@@ -1,7 +1,7 @@
 # $vcvars_dir = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat"
 $vcvars_dir = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Auxiliary\Build\vcvars64.bat"
 
-$repetitions = 30
+$repetitions = 20
 $boost_dir = "F:\cpp-lit-libs\boost_1_74_0"
 $date_dir = "F:\cpp-lit-libs\date-master\include"
 $tracy_dir = "F:\cpp-lit-libs\tracy-0.7.1"
@@ -67,18 +67,13 @@ Foreach($include_dir in $include_dirs){
 }
 Write-Output "include statement: " $include_statement
 
-function run_meas($category, $inc, $repeats, $config)
+function run_meas($category, $inc, $repeats)
 {
+   $cl_command = "CL " + $include_statement + "/O2 /MD /D " + "i_" + $inc + " /std:c++latest /experimental:module /EHsc /nologo build_project/main.cpp /link /MACHINE:X64"
    For ($i=0; $i -lt $repeats; $i++){
-      $cl_command = "CL " + $include_statement + "/O2 /MD /D " + "i_" + $inc + " /std:c++latest /experimental:module /EHsc /nologo build_project/main.cpp /link /MACHINE:X64"
       Measure-Command {
-         if($config -eq "Release"){
-            Invoke-Expression $cl_command
-         }
-         else{
-            Invoke-Expression $cl_command
-         }
-         } | Out-File -FilePath "measurements\$category-$inc-$config.txt" -Append -Encoding utf8
+         Invoke-Expression $cl_command
+         } | Out-File -FilePath "measurements\$category-$inc.txt" -Append -Encoding utf8
    }
 }
 
@@ -119,24 +114,20 @@ new-item -Name measurements -ItemType directory -Force | out-null # create measu
 
 run_meas "std" "warmup" $repetitions "Release"
 Foreach($header in $misc_headers){
-   run_meas "misc" $header $repetitions "Release"
-   run_meas "misc" $header $repetitions "Debug"
+   run_meas "misc" $header $repetitions
 }
 if(Test-Path variable:boost_dir){
    Foreach($header in $boost_headers){
-      run_meas "boost" $header $repetitions "Release"
-      run_meas "boost" $header $repetitions "Debug"
+      run_meas "boost" $header $repetitions
    }
 }
 if($use_std_modules){
    Foreach($header in $std_modules){
-      run_meas "std_modules" $header $repetitions "Release"
-      run_meas "std_modules" $header $repetitions "Debug"
+      run_meas "std_modules" $header $repetitions
    }
 }
 if($use_std_headers){
    Foreach($header in $std_headers){
-      run_meas "std" $header $repetitions "Release"
-      run_meas "std" $header $repetitions "Debug"
+      run_meas "std" $header $repetitions
    }
 }

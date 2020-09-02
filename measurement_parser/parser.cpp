@@ -100,7 +100,7 @@ namespace parser {
    struct HeaderMeasurement {
       std::string category;
       std::string header_name;
-      Measurement release, debug;
+      double mean, std_dev;
    };
 
    auto get_measurement(const std::vector<double>& times) ->Measurement {
@@ -135,10 +135,8 @@ namespace parser {
             measurements.emplace_back(HeaderMeasurement{ category, header_name, 0.0, 0.0 });
             it = measurements.end() - 1;
          }
-         if (stem_split[2] == "Release")
-            it->release = measurement;
-         else
-            it->debug = measurement;
+         it->mean = measurement.mean;
+         it->std_dev = measurement.std_dev;
       }
       return measurements;
    }
@@ -157,11 +155,10 @@ namespace parser {
       for (const auto& [category, measurements] : measurements) {
          fs::path output_path = output_folder / ("data_" + category + ".txt" );
          std::ofstream file_out(output_path);
-         file_out << "#header_name release_mean release_stddev debug_mean debug_stddev" << std::endl;
+         file_out << "#header_name mean stddev" << std::endl;
          for (const HeaderMeasurement& measurement : measurements) {
             file_out << measurement.header_name << " ";
-            file_out << measurement.release.mean << " " << measurement.release.std_dev << " ";
-            file_out << measurement.debug.mean << " " << measurement.debug.std_dev;
+            file_out << measurement.mean << " " << measurement.std_dev;
             file_out << std::endl;
          }
       }
