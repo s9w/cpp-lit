@@ -2,6 +2,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import os.path
 import numpy as np
+
 def get_pretty_name(name):
     if(name.startswith("std_")):
         return "std." + name[4:]
@@ -79,26 +80,13 @@ for dataset in [std_data, std_modules_data, boost_data, misc_data]:
     expensive_datasets.append(get_dataset_slice(dataset, exp_indices))
 
 def create_plot(datasets, fn):
-    def plot_dataset(ax, y_pos, names, means, errors, colors, all_values, all_errors, bar_filter):
-        y_filtered = np.array(y_pos)[bar_filter]
-        all_values_filtered = all_values[bar_filter]
-        width_filtered = (means-all_values)[bar_filter]
-        _ = ax.barh(y_filtered, left=all_values_filtered, width=width_filtered, height=0.3, color="silver", zorder=0)
-        _ = ax.scatter(means, y_pos, s=40, c=colors, zorder=2)
-        _ = ax.scatter(all_values, y_pos, s=40, c="green", zorder=1)
-        # _ = ax.errorbar(means, y_pos, xerr=errors, linestyle='none', capsize=2, zorder=0, color="black")
-        # _ = ax.errorbar(all_values, y_pos, xerr=all_errors, linestyle='none', capsize=2, zorder=0, color="black")
-        
-        _ = plt.yticks(y_pos, names, fontfamily="monospace", ha = 'left')
-        ax.get_yaxis().set_tick_params(pad=110)
-    
     def plot_datasets(ax, datasets):
         names = []
-        mean_values = np.empty(0)
+        means = np.empty(0)
         errors = np.empty(0)
-        all_mean_values = np.empty(0)
+        all_means = np.empty(0)
         all_errors = np.empty(0)
-        plot_colors = []
+        colors = []
 
         y_offset = 0
         y_pos = []
@@ -107,19 +95,27 @@ def create_plot(datasets, fn):
             dataset_size = len(dataset["names"])
             names.extend(dataset["names"].tolist())
             y_pos.extend(range(-y_offset, -(y_offset+dataset_size), -1))
-            plot_colors.extend([dataset["color"]] * dataset_size)
-            mean_values = np.append(mean_values, dataset["mean"])
+            colors.extend([dataset["color"]] * dataset_size)
+            means = np.append(means, dataset["mean"])
             errors = np.append(errors, dataset["error"])
-            all_mean_values = np.append(all_mean_values, dataset["all_mean"])
+            all_means = np.append(all_means, dataset["all_mean"])
             all_errors = np.append(all_errors, dataset["all_error"])
             y_offset += dataset_size + 1
-        bar_filter = np.where(all_mean_values>0)
+        bar_filter = np.where(all_means>0)
 
         ax.set_xlabel("Include time [seconds]")
         ax.margins(0)
-        plot_dataset(ax, y_pos, names, mean_values, errors, plot_colors, all_mean_values, all_errors, bar_filter)
+
+        _ = ax.hlines(y_pos, xmin=-0.01, xmax=means, alpha=0.5, color="black", zorder=-1, linewidths=0.7, linestyles="dashed")
+        _ = ax.hlines(np.array(y_pos)[bar_filter], xmin=all_means[bar_filter], xmax=means[bar_filter], linewidths=3, color="silver", zorder=0)
+        _ = ax.scatter(means, y_pos, s=40, c=colors, zorder=2)
+        _ = ax.scatter(all_means, y_pos, s=40, c="green", zorder=1)
+        # _ = ax.errorbar(means, y_pos, xerr=errors, linestyle='none', capsize=2, zorder=0, color="black")
+        # _ = ax.errorbar(all_means, y_pos, xerr=all_errors, linestyle='none', capsize=2, zorder=0, color="black")
+        _ = plt.yticks(y_pos, names, fontfamily="monospace", ha = 'left')
+        ax.get_yaxis().set_tick_params(pad=110)
+
         ax.set_axisbelow(True)
-        ax.grid(axis="y")
         ax.spines["right"].set_visible(False)
         ax.spines["top"].set_visible(False)
         ax.spines["bottom"].set_visible(False)
