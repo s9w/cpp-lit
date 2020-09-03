@@ -15,7 +15,9 @@ namespace parser {
    }
 
    double get_median(const std::vector<double>& values) {
-      return values[values.size() / 2];
+      std::vector<double> sorted = values;
+      std::sort(sorted.begin(), sorted.end());
+      return sorted[sorted.size() / 2];
    }
 
 
@@ -100,12 +102,12 @@ namespace parser {
    struct HeaderMeasurement {
       std::string category;
       std::string header_name;
-      double mean, std_dev;
+      Measurement no_inc, all_inc;
    };
 
    auto get_measurement(const std::vector<double>& times) ->Measurement {
       const double mean = get_mean(times);
-      //const double median = get_median(times);
+      const double median = get_median(times);
       const double std_dev = get_std_dev(times, mean);
       return { mean, std_dev };
    }
@@ -135,8 +137,10 @@ namespace parser {
             measurements.emplace_back(HeaderMeasurement{ category, header_name, 0.0, 0.0 });
             it = measurements.end() - 1;
          }
-         it->mean = measurement.mean;
-         it->std_dev = measurement.std_dev;
+         if (stem_split[2] == "all_inc")
+            it->all_inc = measurement;
+         else
+            it->no_inc = measurement;
       }
       return measurements;
    }
@@ -155,10 +159,11 @@ namespace parser {
       for (const auto& [category, measurements] : measurements) {
          fs::path output_path = output_folder / ("data_" + category + ".txt" );
          std::ofstream file_out(output_path);
-         file_out << "#header_name mean stddev" << std::endl;
+         file_out << "#header_name no_inc_mean stddev all_inc_mean stddev" << std::endl;
          for (const HeaderMeasurement& measurement : measurements) {
             file_out << measurement.header_name << " ";
-            file_out << measurement.mean << " " << measurement.std_dev;
+            file_out << measurement.no_inc.mean << " " << measurement.no_inc.std_dev << " ";
+            file_out << measurement.all_inc.mean << " " << measurement.all_inc.std_dev;
             file_out << std::endl;
          }
       }

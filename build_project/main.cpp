@@ -1,3 +1,95 @@
+#ifdef all_inc
+#include <algorithm>
+#include <any>
+#include <array>
+#include <atomic>
+#include <bitset>
+#include <cassert>
+#include <cctype>
+#include <cerrno>
+#include <cfenv>
+#include <cfloat>
+#include <charconv>
+#include <chrono>
+#include <cinttypes>
+#include <climits>
+#include <clocale>
+#include <cmath>
+#include <compare>
+#include <complex>
+#include <concepts>
+#include <condition_variable>
+#include <csetjmp>
+#include <csignal>
+#include <cstdarg>
+#include <cstddef>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <cuchar>
+#include <cwchar>
+#include <cwctype>
+#include <deque>
+#include <exception>
+#include <execution>
+#include <filesystem>
+#include <forward_list>
+#include <fstream>
+#include <functional>
+#include <future>
+#include <initializer_list>
+#include <iomanip>
+#include <ios>
+#include <iosfwd>
+#include <iostream>
+#include <istream>
+#include <iterator>
+#include <limits>
+#include <list>
+#include <locale>
+#include <map>
+#include <memory_resource>
+#include <memory>
+#include <mutex>
+#include <new>
+#include <numeric>
+#include <optional>
+#include <ostream>
+#include <queue>
+#include <random>
+#include <ranges>
+#include <ratio>
+#include <regex>
+#include <scoped_allocator>
+#include <set>
+#include <shared_mutex>
+#include <sstream>
+#include <stack>
+#include <stdexcept>
+#include <streambuf>
+#include <string_view>
+#include <string>
+#include <system_error>
+#include <thread>
+#include <tuple>
+#include <type_traits>
+#include <typeindex>
+#include <typeinfo>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
+#include <valarray>
+#include <variant>
+#include <vector>
+#include <version>
+#include <bit>
+#include <coroutine>
+#include <numbers>
+#include <span>
+#endif
+
 #ifdef i_concepts
 #include <concepts>
 #endif
@@ -399,28 +491,12 @@ import std.core;
 #include <boost/uuid/uuid_generators.hpp>
 #endif
 
-#ifdef i_boost_asio
-#include <boost/asio.hpp>
-#endif
-
-#ifdef i_boost_atomic
-#include <boost/atomic.hpp>
-#endif
-
-#ifdef i_boost_beast
-#include <boost/beast.hpp>
-#endif
-
 #ifdef i_boost_outcome
 #include <boost/outcome/outcome.hpp>
 #endif
 
 #ifdef i_boost_any
 #include <boost/any.hpp>
-#endif
-
-#ifdef i_boost_hana
-#include <boost/hana.hpp>
 #endif
 
 #ifdef i_date_date
@@ -442,10 +518,6 @@ import std.core;
 
 #ifdef i_fmt
 #include <fmt/core.h>
-#endif
-
-#ifdef i_doctest
-#include <doctest/doctest.h>
 #endif
 
 #ifdef i_imgui
