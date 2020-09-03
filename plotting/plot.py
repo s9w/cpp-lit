@@ -62,8 +62,8 @@ all_baseline = null_data["all_mean"][baseline_index][0]
 datasets = []
 std_data = load_data("data_std.txt", "blue", True, baseline, all_baseline)
 std_modules_data = load_data("data_std_modules.txt", "blue", True, baseline, all_baseline)
-boost_data = load_data("data_boost.txt", "black", True, baseline, all_baseline)
-misc_data = load_data("data_misc.txt", "black", False, baseline, all_baseline)
+boost_data = load_data("data_boost.txt", "red", True, baseline, all_baseline)
+misc_data = load_data("data_misc.txt", "red", False, baseline, all_baseline)
 
 expensive_datasets = []
 cheap_datasets = []
@@ -79,9 +79,13 @@ for dataset in [std_data, std_modules_data, boost_data, misc_data]:
     expensive_datasets.append(get_dataset_slice(dataset, exp_indices))
 
 def create_plot(datasets, fn):
-    def plot_dataset(ax, y_pos, names, means, errors, colors, all_values, all_errors):
+    def plot_dataset(ax, y_pos, names, means, errors, colors, all_values, all_errors, bar_filter):
+        y_filtered = np.array(y_pos)[bar_filter]
+        all_values_filtered = all_values[bar_filter]
+        width_filtered = (means-all_values)[bar_filter]
+        _ = ax.barh(y_filtered, left=all_values_filtered, width=width_filtered, height=0.3, color="silver", zorder=0)
         _ = ax.scatter(means, y_pos, s=40, c=colors, zorder=2)
-        _ = ax.scatter(all_values, y_pos, s=40, c="green")
+        _ = ax.scatter(all_values, y_pos, s=40, c="green", zorder=1)
         # _ = ax.errorbar(means, y_pos, xerr=errors, linestyle='none', capsize=2, zorder=0, color="black")
         # _ = ax.errorbar(all_values, y_pos, xerr=all_errors, linestyle='none', capsize=2, zorder=0, color="black")
         
@@ -109,10 +113,11 @@ def create_plot(datasets, fn):
             all_mean_values = np.append(all_mean_values, dataset["all_mean"])
             all_errors = np.append(all_errors, dataset["all_error"])
             y_offset += dataset_size + 1
+        bar_filter = np.where(all_mean_values>0)
 
         ax.set_xlabel("Include time [seconds]")
         ax.margins(0)
-        plot_dataset(ax, y_pos, names, mean_values, errors, plot_colors, all_mean_values, all_errors)
+        plot_dataset(ax, y_pos, names, mean_values, errors, plot_colors, all_mean_values, all_errors, bar_filter)
         ax.set_axisbelow(True)
         ax.grid(axis="y")
         ax.spines["right"].set_visible(False)
