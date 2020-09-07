@@ -1,7 +1,7 @@
 # $vcvars_dir = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Auxiliary\Build\vcvars64.bat"
 $vcvars_dir = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Auxiliary\Build\vcvars64.bat"
 
-$repetitions = 10
+$repetitions = 20
 $boost_dir = "F:\cpp-lit-libs\boost_1_74_0"
 $date_dir = "F:\cpp-lit-libs\date-master\include"
 $tracy_dir = "F:\cpp-lit-libs\tracy-0.7.1"
@@ -67,13 +67,15 @@ function run_meas($category, $inc, $repeats, $include_mode)
    if($include_mode -eq "all_inc"){
       $inc_mode_str = "/D all_inc"
    }
-   $cl_command = "CL " + $include_statement + "/O2 /MD /D " + "i_" + $inc + " " + $inc_mode_str + " /std:c++latest /experimental:module /EHsc /nologo build_project/main.cpp /link /MACHINE:X64"
+   $cl_command = "CL " + $include_statement + "/O2 /GL /Oi /MD /D NDEBUG /D " + "i_" + $inc + " " + $inc_mode_str + " /std:c++latest /experimental:module /EHsc /nologo build_project/main.cpp /link /MACHINE:X64 /LTCG:incremental"
    # $cl_command
    Invoke-Expression $cl_command
+   Remove-Item -Path main.*
    For ($i=0; $i -lt $repeats; $i++){
       Measure-Command {
          Invoke-Expression $cl_command
          } | Out-File -FilePath "measurements\$category-$inc-$include_mode.txt" -Append -Encoding utf8
+      Remove-Item -Path main.*
    }
 }
 
