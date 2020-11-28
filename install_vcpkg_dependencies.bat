@@ -1,1 +1,1 @@
-vcpkg.exe install --triplet x64-windows date imgui boost-variant2 boost-optional boost-any fmt outcome glm
+vcpkg.exe install --triplet x64-windows date imgui boost-variant2 boost-optional boost-any fmt outcome glm doctest
