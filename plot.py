@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 def get_ms_from_txt(filename):
     ms_regex = re.compile(r'TotalMilliseconds\s?:\s?(\d*[,.]\d*)')
-    ignore_count = 5
+    ignore_count = 1
     with open(filename) as f:
         times = []
         for line in f.readlines():
@@ -19,27 +19,31 @@ def get_ms_from_txt(filename):
                 ignore_count -= 1
                 continue
             ms_str = match.group(1).replace(",", ".")
-            ms = float(ms_str)
+            ms = float(ms_str) / 5.0 
             times.append(ms)
         times = np.array(times)
 
         mean = np.mean(times)
         std = np.std(times)
-        return np.median(times), std
+        relative_std = std / mean
+        return mean, relative_std
 
 
 measurement_fn_regex = re.compile(r'([\w_]+)-([\w_]+)-([\w_]+)\.txt')
 d = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+worst_relative_std = 0.0
 for path in pathlib.Path('measurements').iterdir():
-    
-    if path.is_file():
-        match = measurement_fn_regex.match(path.name)
-        if match is None:
-            continue
-        category = match.group(1)
-        lib = match.group(2)
-        third = match.group(3)
-        d[category][lib][third] = get_ms_from_txt(path)
+    if not path.is_file():
+        continue
+    match = measurement_fn_regex.match(path.name)
+    if match is None:
+        continue
+    category = match.group(1)
+    lib = match.group(2)
+    third = match.group(3)
+    d[category][lib][third], relative_std = get_ms_from_txt(path)
+    worst_relative_std = max(worst_relative_std, relative_std)
+print("worst_relative_std: {:.1f}%".format(100.0 * worst_relative_std))
 # print(json.dumps(d, indent=4))
 
 
@@ -50,25 +54,23 @@ def get_sorted_data(category, labels, with_all_inc):
     sort_data = []
     for name, res in d[category].items():
         labels.append(name)
-        time = res["no_inc"][0] - d["baseline"]["baseline"]["no_inc"][0]
-        time_std = res["no_inc"][1]
+        time = res["no_inc"] - d["baseline"]["baseline"]["no_inc"]
         if with_all_inc:
-            all_inc_time = res["all_inc"][0] - d["baseline"]["baseline"]["all_inc"][0]
-            all_inc_time_std = res["all_inc"][1]
-            sort_data.append((time, time_std, all_inc_time, all_inc_time_std, current_pos))
+            all_inc_time = res["all_inc"] - d["baseline"]["baseline"]["all_inc"]
+            sort_data.append((time, all_inc_time, current_pos))
         else:
-            sort_data.append((time, time_std, 0, 0, current_pos - 1))
+            sort_data.append((time, 0, current_pos - 1))
         current_pos -= 1
     if len(sort_data) == 0:
         return np.empty([5, 0])
     # sort_data.sort(key=lambda entry: entry[0])
-    times, times_err, ideal_times, deal_times_err, y_pos = zip(*sort_data)
-    np_data = np.vstack((y_pos, times, times_err, ideal_times, deal_times_err))
+    times, ideal_times, y_pos = zip(*sort_data)
+    np_data = np.vstack((y_pos, times, ideal_times))
     current_pos -= 2.0
     return np_data
 
 labels = []
-np_data = np.empty([5, 0])
+np_data = np.empty([3, 0])
 np_data = np.append(np_data, get_sorted_data("std", labels, with_all_inc=False), axis=1)
 np_data = np.append(np_data, get_sorted_data("std_modules", labels, with_all_inc=False), axis=1)
 np_data = np.append(np_data, get_sorted_data("third_party", labels, with_all_inc=True), axis=1)
@@ -79,22 +81,19 @@ np_data = np.append(np_data, get_sorted_data("boost", labels, with_all_inc=True)
 fig = plt.figure(figsize=(10, 1 + 0.15 * len(labels)))
 ax = fig.add_subplot()
 
-has_ideal = np.where(np_data[3,:] != 0)[0]
-has_no_ideal = np.where(np_data[3,:] == 0)[0]
+has_ideal = np.where(np_data[2,:] != 0)[0]
+has_no_ideal = np.where(np_data[2,:] == 0)[0]
+
+data_color = "tab:orange"
 
 # Dashed alignment lines for all
 _ = ax.hlines(y=np_data[0,:], xmin=-0.01, xmax=np_data[1,:], alpha=0.5, color="black", zorder=-1, linewidths=0.7, linestyles="dashed")
 
 # Standard library
-_ = ax.scatter(x=np_data[1,has_no_ideal], y=np_data[0,has_no_ideal], color="black")
-_ = ax.errorbar(x=np_data[1,has_no_ideal], y=np_data[0,has_no_ideal], xerr=np_data[2,has_no_ideal], linestyle='None', color="black")
+_ = ax.hlines(y=np_data[0,has_no_ideal], xmin=0.0, xmax=np_data[1,has_no_ideal], alpha=1.0, color=data_color, zorder=-1, linewidths=3)
 
 # Third party
-_ = ax.scatter(x=np_data[1,has_ideal], y=np_data[0,has_ideal]+0.5, color="red")
-_ = ax.errorbar(x=np_data[1,has_ideal], y=np_data[0,has_ideal]+0.5, xerr=np_data[2,has_ideal], linestyle='None', color="red")
-_ = ax.scatter(x=np_data[3,has_ideal], y=np_data[0, has_ideal], color="limegreen")
-_ = ax.errorbar(x=np_data[3,has_ideal], y=np_data[0,has_ideal], xerr=np_data[4,has_ideal], linestyle='None', color="limegreen")
-_ = ax.hlines(y=np_data[0,has_ideal], xmin=np_data[1,has_ideal], xmax=np_data[3,has_ideal], alpha=0.5, color="black", zorder=-1, linewidths=3)
+_ = ax.hlines(y=np_data[0,has_ideal], xmin=np_data[1,has_ideal], xmax=np_data[2,has_ideal], alpha=1.0, color=data_color, zorder=-1, linewidths=3)
 
 _ = plt.yticks(np_data[0,:], labels, fontfamily="monospace", ha='left')
 

@@ -3,7 +3,7 @@ $vcvars_dir = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Au
 $vcpkg_dir = "C:\inc\vcpkg-master"
 $tracy_dir = "..\..\game\libs\tracy\tracy"
 
-$repetitions = 20
+$repetitions = 10
 
 function Invoke-CmdScript {
    param(
@@ -31,6 +31,7 @@ function del_main{
    while($true){
       try{
          Remove-Item -Path main.*
+         Remove-Item -Path tu*.obj
          return
       }
       catch{
@@ -51,7 +52,7 @@ function Invoke-Meas{
    if($include_mode -eq "all_inc"){
       $inc_mode_str = "/D all_inc"
    }
-   $cl_command = "CL " + $include_statement + "/O2 /GL /Oi /MD /D NDEBUG /D " + "i_" + $inc + " " + $inc_mode_str + " /std:c++latest /experimental:module /EHsc /nologo build_project/main.cpp build_project/tu.cpp /link /MACHINE:X64 /LTCG:incremental"
+   $cl_command = "CL " + $include_statement + "/O2 /GL /Oi /MD /D NDEBUG /D " + "i_" + $inc + " " + $inc_mode_str + " /std:c++latest /experimental:module /EHsc /nologo build_project/main.cpp build_project/tu0.cpp build_project/tu1.cpp build_project/tu2.cpp build_project/tu3.cpp build_project/tu4.cpp /link /MACHINE:X64 /LTCG:incremental"
    Write-Host ("description: {0}, inc: {1}, mode: {2}" -f $description, $inc, $include_mode) -ForegroundColor DarkGreen
    
    For ($i=0; $i -lt $repeats; $i++){
