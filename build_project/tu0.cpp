@@ -1,100 +1,276 @@
-#ifdef no_inc
-#endif
-
-#ifdef all_inc
+#if defined(all_std)
+#ifndef no_algorithm
 #include <algorithm>
+#endif
+#ifndef no_any
 #include <any>
+#endif
+#ifndef no_array
 #include <array>
+#endif
+#ifndef no_atomic
 #include <atomic>
+#endif
+#ifndef no_bitset
 #include <bitset>
+#endif
+#ifndef no_cassert
 #include <cassert>
+#endif
+#ifndef no_cctype
 #include <cctype>
+#endif
+#ifndef no_cerrno
 #include <cerrno>
+#endif
+#ifndef no_cfenv
 #include <cfenv>
+#endif
+#ifndef no_cfloat
 #include <cfloat>
+#endif
+#ifndef no_charconv
 #include <charconv>
+#endif
+#ifndef no_chrono
 #include <chrono>
+#endif
+#ifndef no_cinttypes
 #include <cinttypes>
+#endif
+#ifndef no_climits
 #include <climits>
+#endif
+#ifndef no_clocale
 #include <clocale>
+#endif
+#ifndef no_cmath
 #include <cmath>
+#endif
+#ifndef no_compare
 #include <compare>
+#endif
+#ifndef no_complex
 #include <complex>
+#endif
+#ifndef no_concepts
 #include <concepts>
+#endif
+#ifndef no_condition_variable
 #include <condition_variable>
+#endif
+#ifndef no_csetjmp
 #include <csetjmp>
+#endif
+#ifndef no_csignal
 #include <csignal>
+#endif
+#ifndef no_cstdarg
 #include <cstdarg>
+#endif
+#ifndef no_cstddef
 #include <cstddef>
+#endif
+#ifndef no_cstdint
 #include <cstdint>
+#endif
+#ifndef no_cstdio
 #include <cstdio>
+#endif
+#ifndef no_cstdlib
 #include <cstdlib>
+#endif
+#ifndef no_cstring
 #include <cstring>
+#endif
+#ifndef no_ctime
 #include <ctime>
+#endif
+#ifndef no_cuchar
 #include <cuchar>
+#endif
+#ifndef no_cwchar
 #include <cwchar>
+#endif
+#ifndef no_cwctype
 #include <cwctype>
+#endif
+#ifndef no_deque
 #include <deque>
+#endif
+#ifndef no_exception
 #include <exception>
+#endif
+#ifndef no_execution
 #include <execution>
+#endif
+#ifndef no_filesystem
 #include <filesystem>
+#endif
+#ifndef no_forward_list
 #include <forward_list>
+#endif
+#ifndef no_fstream
 #include <fstream>
+#endif
+#ifndef no_functional
 #include <functional>
+#endif
+#ifndef no_future
 #include <future>
+#endif
+#ifndef no_initializer_list
 #include <initializer_list>
+#endif
+#ifndef no_iomanip
 #include <iomanip>
+#endif
+#ifndef no_ios
 #include <ios>
+#endif
+#ifndef no_iosfwd
 #include <iosfwd>
+#endif
+#ifndef no_iostream
 #include <iostream>
+#endif
+#ifndef no_istream
 #include <istream>
+#endif
+#ifndef no_iterator
 #include <iterator>
+#endif
+#ifndef no_limits
 #include <limits>
+#endif
+#ifndef no_list
 #include <list>
+#endif
+#ifndef no_locale
 #include <locale>
+#endif
+#ifndef no_map
 #include <map>
+#endif
+#ifndef no_memory_resource
 #include <memory_resource>
+#endif
+#ifndef no_memory
 #include <memory>
+#endif
+#ifndef no_mutex
 #include <mutex>
+#endif
+#ifndef no_new
 #include <new>
+#endif
+#ifndef no_numeric
 #include <numeric>
+#endif
+#ifndef no_optional
 #include <optional>
+#endif
+#ifndef no_ostream
 #include <ostream>
+#endif
+#ifndef no_queue
 #include <queue>
+#endif
+#ifndef no_random
 #include <random>
+#endif
+#ifndef no_ranges
 #include <ranges>
+#endif
+#ifndef no_ratio
 #include <ratio>
+#endif
+#ifndef no_regex
 #include <regex>
+#endif
+#ifndef no_scoped_allocator
 #include <scoped_allocator>
+#endif
+#ifndef no_set
 #include <set>
+#endif
+#ifndef no_shared_mutex
 #include <shared_mutex>
+#endif
+#ifndef no_sstream
 #include <sstream>
+#endif
+#ifndef no_stack
 #include <stack>
+#endif
+#ifndef no_stdexcept
 #include <stdexcept>
+#endif
+#ifndef no_streambuf
 #include <streambuf>
+#endif
+#ifndef no_string_view
 #include <string_view>
+#endif
+#ifndef no_string
 #include <string>
+#endif
+#ifndef no_system_error
 #include <system_error>
+#endif
+#ifndef no_thread
 #include <thread>
+#endif
+#ifndef no_tuple
 #include <tuple>
+#endif
+#ifndef no_type_traits
 #include <type_traits>
+#endif
+#ifndef no_typeindex
 #include <typeindex>
+#endif
+#ifndef no_typeinfo
 #include <typeinfo>
+#endif
+#ifndef no_unordered_map
 #include <unordered_map>
+#endif
+#ifndef no_unordered_set
 #include <unordered_set>
+#endif
+#ifndef no_utility
 #include <utility>
+#endif
+#ifndef no_valarray
 #include <valarray>
+#endif
+#ifndef no_variant
 #include <variant>
+#endif
+#ifndef no_vector
 #include <vector>
+#endif
+#ifndef no_version
 #include <version>
+#endif
 
 #if _MSC_VER >= 1928
+#ifndef no_bit
 #include <bit>
+#endif
+#ifndef no_coroutine
 #include <coroutine>
+#endif
+#ifndef no_numbers
 #include <numbers>
+#endif
+#ifndef no_span
 #include <span>
 #endif
-#endif
+#endif // _MSC_VER
+
+#endif // all_std
 
 #ifdef i_concepts
 #include <concepts>
