@@ -65,7 +65,7 @@ def get_file_data(mode="", ignore_count=1):
             file_data[category][lib] = get_times_from_txt(path, ignore_count)
         else:
             file_data[category][lib] = get_time_and_std_from_txt(path, ignore_count)
-    print(json.dumps(file_data, indent=4))
+    # print(json.dumps(file_data, indent=4))
     return file_data
 
 
@@ -94,28 +94,14 @@ def get_positions(categories, file_data):
 def get_addition_error(a, b):
     return np.sqrt(a*a + b*b)
 
+tu_count = 10
 
 def get_worst(category, file_data):
     sort_data = np.empty([0, 2])
     for res in file_data[category].values():
-        worst_time = (res.mean - file_data["special"]["baseline"].mean) / 50
-        worst_time_std = get_addition_error(res.std/50, file_data["special"]["baseline"].std/50)
+        worst_time = (res.mean - file_data["special"]["baseline"].mean) / tu_count
+        worst_time_std = get_addition_error(res.std/tu_count, file_data["special"]["baseline"].std/tu_count)
         sort_data = np.append(sort_data, np.array([[worst_time, worst_time_std]]), axis=0)
-    return sort_data
-
-
-def get_best(category, file_data):
-    sort_data = np.empty([0, 2])
-    for res in file_data[category].values():
-        baseline_all_std = file_data["special"]["baseline"]
-        if category in ["std_modules", "std"]:
-            ideal_time = 0.0
-            ideal_time_std = 0.0
-        else:
-            ideal_time = res.mean - baseline_all_std.mean
-            ideal_time_std = get_addition_error(res.std, + baseline_all_std.std)
-        
-        sort_data = np.append(sort_data, np.array([[ideal_time, ideal_time_std]]), axis=0)
     return sort_data
 
 
@@ -124,27 +110,19 @@ def main_plot():
     categories = ["std", "std_modules", "third_party"]
     labels = get_labels(categories, file_data)
     positions = get_positions(categories, file_data)
-    # print("labels", labels)
+
+    print("baseline std", file_data["special"]["baseline"].std)
+    print("baseline std", file_data["std"]["algorithm"].std)
 
     worst_data = np.empty([0, 2])
     for category in categories:
         worst_data = np.append(worst_data, get_worst(category, file_data), axis=0)
 
-    best_data = np.empty([0, 2])
-    for category in categories:
-        best_data = np.append(best_data, get_best(category, file_data), axis=0)
-
     max_pos = np.max(np.abs(positions))
     fig = plt.figure(figsize=(10, 2 + 0.15 * max_pos))
     ax = fig.add_subplot()
 
-    has_best_mask = best_data[:,0] < 1e20
-    # has_best_mask = best_data[:,0] > 0.001
-
     bar_height = 0.3
-    
-    # y_best = y_best[has_best_mask]
-    best_data = best_data[has_best_mask]
 
     print("baseline", file_data["special"]["baseline"].mean)
     print("version", file_data["std"]["version"].mean)
@@ -152,9 +130,9 @@ def main_plot():
     print("algorithm", file_data["std"]["algorithm"].mean)
 
     def plot_data(pos, data, bar_color, label_text):
-        # _ = ax.barh(y=pos, width=data[:, 0] - data[:, 1], height=bar_height, color=bar_color, label=label_text)
-        # _ = ax.barh(y=pos, left=data[:, 0] - data[:, 1], width=2 * data[:, 1], height=bar_height, color=bar_color, alpha=0.5)
-        _ = ax.errorbar(y=pos, x=data[:, 0], xerr=data[:, 1], capsize=3, ls="", marker=".")
+        _ = ax.barh(y=pos, width=data[:, 0], height=bar_height, color=bar_color, label=label_text)
+        _ = ax.barh(y=pos, left=data[:, 0] - data[:, 1], width=2 * data[:, 1], height=bar_height/2, color="blue", alpha=0.5)
+        # _ = ax.errorbar(y=pos, x=data[:, 0], xerr=data[:, 1], capsize=3, ls="", marker=".")
         # _ = ax.scatter(y=pos, x=data[:, 0], s=5, color="black")
     plot_data(pos=positions, data=worst_data, bar_color="tab:orange", label_text="worst case")
 
@@ -178,6 +156,7 @@ def main_plot():
     # _ = ax.set_xlim(0, ax.get_xlim()[1] + 10)
 
     ax2 = ax.twiny()
+    _ = ax2.set_xlabel("Include time [ms]")
     ax2.set_xlim(ax.get_xlim())
     ax2.spines = ax.spines
 
@@ -190,59 +169,59 @@ def disable_top_right_spines(ax):
     ax.spines["top"].set_visible(False)
 
 
-# def instrumentation_plot():
-#     file_data = get_file_data(mode="raw")
-#     # pick = file_data["special"]["baseline"]["slim"]
-#     # pick = file_data["special"]["baseline"]["fat"]
-#     # pick = file_data["std"]["atomic"]["slim"]
-#     # pick = file_data["std"]["algorithm"]["fat"]
-#     pick = file_data["third_party"]["fmt"]["fat"]
+def instrumentation_plot():
+    file_data = get_file_data(mode="raw")
+    # pick = file_data["std"]["version"]
+    pick = file_data["std"]["type_traits"]
+    print("pick", pick)
 
-#     fig = plt.figure(figsize=(6, 6))
-#     ax = fig.add_subplot(311)
+    fig = plt.figure(figsize=(6, 6))
+    ax = fig.add_subplot(311)
     
-#     # histogram
-#     bin_counts, edges, patches = ax.hist(pick, bins=25, alpha=1.0, color="tab:blue", edgecolor='black', linewidth=0.5)
-#     print(np.max(bin_counts))
-#     mad = get_MAD(pick)
-#     print("mean: {:.1f}, std: {:.1f}, MAD: {:.1f}".format(np.mean(pick), np.std(pick), mad))
-#     ax.errorbar(x=np.mean(pick), y=10, xerr=mad, marker="o", markersize=7, capsize=5, capthick=2, lw=2, color="tab:orange", label="mean and MAD error")
+    # histogram
+    bin_counts, edges, patches = ax.hist(pick, bins=25, alpha=1.0, color="tab:blue", edgecolor='black', linewidth=0.5)
+    print(np.max(bin_counts))
+    mad = get_MAD(pick)
+    bl = np.mean(file_data["special"]["baseline"])
+    print("bl", bl)
+    print("mean: {:.1f}, std: {:.1f}, MAD: {:.1f}".format((np.mean(pick)-bl)/tu_count, np.std(pick), mad))
+    ax.errorbar(x=np.mean(pick), y=10, xerr=mad, marker="o", markersize=7, capsize=5, capthick=2, lw=2, color="tab:orange", label="mean and MAD error")
     
-#     ax.set_ylim(ymin=0)
-#     ax.legend()
+    ax.set_ylim(ymin=0)
+    ax.legend()
 
-#     _ = ax.set_xlabel("Build time [ms]")
-#     disable_top_right_spines(ax)
+    _ = ax.set_xlabel("Build time [ms]")
+    disable_top_right_spines(ax)
 
-#     # Evolution of mean
-#     ax = fig.add_subplot(312)
-#     ax.plot(pick, ".", color="black", markersize=2, alpha=0.4)
-#     mean = np.zeros(shape=(0))
-#     std = np.zeros(shape=(0))
-#     for i in range(1, len(pick) + 1):
-#         slice = pick[:i]
-#         mean = np.append(mean, np.mean(slice))
-#         std = np.append(std, np.std(slice, dtype=np.float64))
-#     ax.plot(mean, label="Mean and its std up to that iteration")
-#     ax.fill_between(range(len(pick)), mean-std, mean+std, alpha=0.1, color="blue")
+    # Evolution of mean
+    ax = fig.add_subplot(312)
+    ax.plot(pick, ".", color="black", markersize=2, alpha=0.4)
+    mean = np.zeros(shape=(0))
+    std = np.zeros(shape=(0))
+    for i in range(1, len(pick) + 1):
+        slice = pick[:i]
+        mean = np.append(mean, np.mean(slice))
+        std = np.append(std, np.std(slice, dtype=np.float64))
+    ax.plot(mean, label="Mean and its std up to that iteration")
+    ax.fill_between(range(len(pick)), mean-std, mean+std, alpha=0.1, color="blue")
 
-#     _ = ax.set_xlabel("Iteration")
-#     _ = ax.set_ylabel("Build time [ms]")
-#     ax.set_xlim(0, len(pick))
-#     # ax.legend(loc="upper left")
-#     disable_top_right_spines(ax)
+    _ = ax.set_xlabel("Iteration")
+    _ = ax.set_ylabel("Build time [ms]")
+    ax.set_xlim(0, len(pick))
+    # ax.legend(loc="upper left")
+    disable_top_right_spines(ax)
     
-#     # Evolution of error
-#     ax = fig.add_subplot(313)
-#     ax.plot(100.0 * std / mean)
-#     _ = ax.set_ylabel("Relative std [%]")
-#     ax.set_xlim(0, len(pick))
-#     disable_top_right_spines(ax)
+    # Evolution of error
+    ax = fig.add_subplot(313)
+    ax.plot(100.0 * std / mean)
+    _ = ax.set_ylabel("Relative std [%]")
+    ax.set_xlim(0, len(pick))
+    disable_top_right_spines(ax)
 
-#     fig.tight_layout()
-#     fig.savefig("instrumentation.png")
+    fig.tight_layout()
+    fig.savefig("instrumentation.png")
 
 
 if __name__ == "__main__":
     main_plot()
-    # instrumentation_plot()
+    instrumentation_plot()
