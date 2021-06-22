@@ -25,13 +25,13 @@ The numbers are measured with care, but are easy to misinterpret. Note:
 #include <windows.h>
 ```
 
-- [tracy](https://github.com/wolfpld/tracy) v0.7.4, obviously with the `TRACY_ENABLE` define.
-- [spdlog](https://github.com/gabime/spdlog) v1.8.0 using header-only version with only `spdlog.h` included. Note that the readme recommends to use the static lib version instead for faster compile times.
+- [tracy](https://github.com/wolfpld/tracy) v0.7.8, obviously with the `TRACY_ENABLE` define.
+- [spdlog](https://github.com/gabime/spdlog) v1.8.5 using header-only version with only `spdlog.h` included. Note that the readme recommends to use the static lib version instead for faster compile times.
 - [fmt](https://github.com/fmtlib/fmt) v7.1.3 including only `fmt/core.h`.
 - [JSON for Modern C++](https://github.com/nlohmann/json) v3.9.1. Note that this is split into the main header (nl_json - `json.hpp`) and the forward include header (nl_json_fwd - `json_fwd.hpp`). The latter is what you would include more often.
 - [ned14/outcome](https://github.com/ned14/outcome) v2.1.3.
 - [glm](https://github.com/g-truc/glm) v0.9.9.8. glm is very modular, this measures the include of `glm.hpp` - which might be on the larger side of what you would typically include.
-- [doctest](https://github.com/onqtam/doctest) 2.4.0.
+- [doctest](https://github.com/onqtam/doctest) 2.4.5.
 
 ## Methodology
 All reported times are based on release builds. The complete compile command without includes is:
