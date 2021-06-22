@@ -123,7 +123,7 @@ def get_addition_error(a, b):
     return np.sqrt(a*a + b*b)
 
 tu_count = 10
-cpp_20_headers = ["concepts", "coroutines", "compare", "version", "source_location", "format", "span", "ranges", "bit", "numbers", "syncstream", "stop_token", "latch", "barrier"]
+cpp_20_headers = ["concepts", "coroutines", "compare", "version", "source_location", "format", "semaphore", "span", "ranges", "bit", "numbers", "syncstream", "stop_token", "latch", "barrier"]
 
 def get_worst(category, file_data):
     sort_data = np.empty([0, 2])
