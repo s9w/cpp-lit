@@ -31,7 +31,6 @@ The numbers are measured with care, but are easy to misinterpret. Note:
 - [JSON for Modern C++](https://github.com/nlohmann/json) v3.9.1. Note that this is split into the main header (nl_json - `json.hpp`) and the forward include header (nl_json_fwd - `json_fwd.hpp`). The latter is what you would include more often.
 - [ned14/outcome](https://github.com/ned14/outcome) v2.1.3.
 - [glm](https://github.com/g-truc/glm) v0.9.9.8. glm is very modular, this measures the include of `glm.hpp` - which might be on the larger side of what you would typically include.
-- [doctest](https://github.com/onqtam/doctest) 2.4.5.
 
 ## Methodology
 All reported times are based on release builds. The complete compile command without includes is:
@@ -49,4 +48,4 @@ The plotted errors are the standard deviations of those numbers. The results com
 The sources being compiled consist of 10 identical translation units with the resulting time being divided by 10 to get the individual cost.  That was done to reduce statistical noise that was caused by the many small file system operations.
 
 
-TODO: fix doctest; run again: check <format> after; add vulkan.hpp
+TODO: add vulkan.hpp

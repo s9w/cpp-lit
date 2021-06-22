@@ -105,7 +105,6 @@ $third_party_libs = @()
 $third_party_libs += "nl_json_fwd","nl_json"
 # $third_party_libs += "ned14_outcome"
 # $third_party_libs += "glm"
-# $third_party_libs += "doctest"
 # $third_party_libs += "boost_variant2"
 
 # Clean measurements output dir
