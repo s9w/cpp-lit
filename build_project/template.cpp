@@ -474,3 +474,11 @@ import std.core;
 #ifdef i_doctest
 #include <doctest/doctest.h>
 #endif
+
+#ifdef i_vulkan
+#include <vulkan/vulkan.h>
+#endif
+
+#ifdef i_vulkanhpp
+#include <vulkan/vulkan.hpp>
+#endif

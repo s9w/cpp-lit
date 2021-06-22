@@ -69,14 +69,16 @@ def get_file_data(ignore_count=1):
 def get_pretty_name(description):
     replacements = {
         "windows": "windows.h",
-         "windows_mal": "windows.h [MAL]",
+         "windows_mal": "windows.h [LAM]",
          "tracy": "Tracy.cpp",
          "doctest": "doctest/doctest.h",
          "spdlog": "spdlog/spdlog.h",
          "fmt": "fmt/core.h",
          "nl_json": "nlohmann/json.hpp",
          "nl_json_fwd": "nlohmann/json_fwd.hpp",
-         "glm": "glm/glm.hpp"
+         "glm": "glm/glm.hpp",
+         "vulkan": "vulkan/vulkan.h",
+         "vulkanhpp": "vulkan/vulkan.hpp"
          }
     if description in replacements.keys():
         return replacements[description]

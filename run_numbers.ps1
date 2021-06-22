@@ -2,6 +2,8 @@
 $vcvars_dir = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Auxiliary\Build\vcvars64.bat"
 $vcpkg_dir = "C:\inc\vcpkg-master"
 $tracy_dir = "..\common_libs\tracy"
+$vulkan_dir = "C:\VulkanSDK\1.2.162.1\Include"
+
 
 function Invoke-CmdScript {
    param(
@@ -23,7 +25,7 @@ if((-Not (Test-Path env:cpp_lit_invoked_vcvars)) -And (-Not $env:cpp_lit_invoked
 }
 
 
-$include_statement = "/I" + $vcpkg_dir + "\installed\x64-windows\include " + "/I" + $tracy_dir + " "
+$include_statement = "/I" + $vcpkg_dir + "\installed\x64-windows\include " + "/I" + $tracy_dir + " /I" + $vulkan_dir + " "
 
 function Setup-Tus{
    Param(
@@ -99,10 +101,12 @@ $std_modules = "std_regex","std_filesystem","std_memory","std_threading","std_co
 $third_party_libs = @()
 # $third_party_libs += "windows","windows_mal"
 # $third_party_libs += "tracy"
+# $third_party_libs += "vulkan"
+$third_party_libs += "vulkanhpp"
 # $third_party_libs += "spdlog"
 # $third_party_libs += "fmt"
 # $third_party_libs += "imgui"
-$third_party_libs += "nl_json_fwd","nl_json"
+# $third_party_libs += "nl_json_fwd","nl_json"
 # $third_party_libs += "ned14_outcome"
 # $third_party_libs += "glm"
 # $third_party_libs += "boost_variant2"
@@ -130,10 +134,10 @@ $normal_repeat_n = 10
 
 
 
-Foreach($header in $std_headers){
-   $def = "i_{0}" -f $header
-   Invoke-Meas -description "std" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
-}
+# Foreach($header in $std_headers){
+#    $def = "i_{0}" -f $header
+#    Invoke-Meas -description "std" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
+# }
 
 # Foreach($header in $std_modules){
 #    $def = "i_{0}" -f $header
@@ -141,9 +145,9 @@ Foreach($header in $std_headers){
 # }
 
 
-# Foreach($header in $third_party_libs){
-#    $def = "i_{0}" -f $header
-#    Invoke-Meas -description "third_party" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
-# }
+Foreach($header in $third_party_libs){
+   $def = "i_{0}" -f $header
+   Invoke-Meas -description "third_party" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
+}
 
 Write-Host "End:" (get-date).ToString('T') -ForegroundColor DarkGreen
