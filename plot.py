@@ -47,7 +47,7 @@ def get_time_and_std_from_txt(filename, ignore_count):
     return Measurement(np.mean(times), np.std(times, dtype=np.float64))
 
 
-def get_file_data(mode="", ignore_count=1):
+def get_file_data(ignore_count=1):
     measurement_fn_regex = re.compile(r'([\w_]+)-([\w_]+)-(\d+)\.txt')
     file_data = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultdict(int))))
     for path in pathlib.Path('measurements').iterdir():
@@ -61,21 +61,47 @@ def get_file_data(mode="", ignore_count=1):
         if category == "std_modules":
             lib = lib.replace("std_", "std.")
         tu_count = int(tu_count)
-        if mode == "raw":
-            file_data[category][lib] = get_times_from_txt(path, ignore_count)
-        else:
-            file_data[category][lib] = get_time_and_std_from_txt(path, ignore_count)
+        file_data[category][lib] = get_time_and_std_from_txt(path, ignore_count)
     # print(json.dumps(file_data, indent=4))
     return file_data
 
 
-def get_labels(categories, file_data):
+def get_pretty_name(description):
+    replacements = {
+        "windows": "windows.h",
+         "windows_mal": "windows.h [MAL]",
+         "tracy": "Tracy.cpp",
+         "doctest": "doctest/doctest.h",
+         "spdlog": "spdlog/spdlog.h",
+         "fmt": "fmt/core.h",
+         "nl_json": "nlohmann/json.hpp",
+         "nl_json_fwd": "nlohmann/json_fwd.hpp",
+         "glm": "glm/glm.hpp"
+         }
+    if description in replacements.keys():
+        return replacements[description]
+    else:
+        return description
+
+def get_raw_labels(categories, file_data):
     labels = []
     for category in categories:
         for name in file_data[category].keys():
             labels.append(name)
+    return labels
+
+def get_labels(raw_labels):
+    labels = []
+    is_std = True
+    for raw_label in raw_labels:
+        if is_std:
+            raw_label = "<{}>".format(raw_label)
+        labels.append(get_pretty_name(raw_label))
+        if raw_label == "<version>":
+            is_std = False
     max_len = max([len(label) for label in labels])
-    labels = [(label+" ").ljust(max_len+2, '—') for label in labels] #—
+    labels = [(label+" ").ljust(max_len+1, '—') for label in labels]
+    
     return labels
 
 
@@ -95,6 +121,7 @@ def get_addition_error(a, b):
     return np.sqrt(a*a + b*b)
 
 tu_count = 10
+cpp_20_headers = ["concepts", "coroutines", "compare", "version", "source_location", "format", "span", "ranges", "bit", "numbers", "syncstream", "stop_token", "latch", "barrier"]
 
 def get_worst(category, file_data):
     sort_data = np.empty([0, 2])
@@ -108,7 +135,8 @@ def get_worst(category, file_data):
 def main_plot():
     file_data = get_file_data()
     categories = ["std", "std_modules", "third_party"]
-    labels = get_labels(categories, file_data)
+    raw_labels = get_raw_labels(categories, file_data)
+    labels = get_labels(raw_labels)
     positions = get_positions(categories, file_data)
 
     print("baseline std", file_data["special"]["baseline"].std)
@@ -119,29 +147,22 @@ def main_plot():
         worst_data = np.append(worst_data, get_worst(category, file_data), axis=0)
 
     max_pos = np.max(np.abs(positions))
-    fig = plt.figure(figsize=(10, 2 + 0.15 * max_pos))
+    fig = plt.figure(figsize=(10, 2 + 0.12 * max_pos))
     ax = fig.add_subplot()
 
     bar_height = 0.3
 
-    print("baseline", file_data["special"]["baseline"].mean)
-    print("version", file_data["std"]["version"].mean)
-    print("span", file_data["std"]["span"].mean)
-    print("algorithm", file_data["std"]["algorithm"].mean)
-
-    def plot_data(pos, data, bar_color, label_text):
-        _ = ax.barh(y=pos, width=data[:, 0], height=bar_height, color=bar_color, label=label_text)
-        _ = ax.barh(y=pos, left=data[:, 0] - data[:, 1], width=2 * data[:, 1], height=bar_height/2, color="blue", alpha=0.5)
-        # _ = ax.errorbar(y=pos, x=data[:, 0], xerr=data[:, 1], capsize=3, ls="", marker=".")
-        # _ = ax.scatter(y=pos, x=data[:, 0], s=5, color="black")
-    plot_data(pos=positions, data=worst_data, bar_color="tab:orange", label_text="worst case")
-
-    # ax.legend(loc="lower right")
+    _ = ax.barh(y=positions, width=worst_data[:, 0], height=bar_height, color="tab:orange")
+    _ = ax.barh(y=positions, left=worst_data[:, 0] - worst_data[:, 1], width=2 * worst_data[:, 1], height=bar_height/2, color="blue", alpha=0.5)
 
     _ = plt.yticks(positions, labels, fontfamily="monospace", horizontalalignment='left')
 
+    for i, label in enumerate(raw_labels):
+        if label in cpp_20_headers:
+            ax.get_yticklabels()[i].set_color("red")
+
     ax.grid(axis='x', alpha=0.2)
-    ax.get_yaxis().set_tick_params(pad=120)
+    ax.get_yaxis().set_tick_params(pad=130)
     ax.get_yaxis().set_tick_params(length=0)
     ax.set_axisbelow(True)
     ax.spines["right"].set_visible(False)
@@ -153,7 +174,6 @@ def main_plot():
     _ = ax.set_xlabel("Include time [ms]")
     ax.margins(0)
     _ = ax.set_ylim(ax.get_ylim()[0]-1, ax.get_ylim()[1]+1)
-    # _ = ax.set_xlim(0, ax.get_xlim()[1] + 10)
 
     ax2 = ax.twiny()
     _ = ax2.set_xlabel("Include time [ms]")
@@ -169,59 +189,5 @@ def disable_top_right_spines(ax):
     ax.spines["top"].set_visible(False)
 
 
-def instrumentation_plot():
-    file_data = get_file_data(mode="raw")
-    # pick = file_data["std"]["version"]
-    pick = file_data["std"]["type_traits"]
-    print("pick", pick)
-
-    fig = plt.figure(figsize=(6, 6))
-    ax = fig.add_subplot(311)
-    
-    # histogram
-    bin_counts, edges, patches = ax.hist(pick, bins=25, alpha=1.0, color="tab:blue", edgecolor='black', linewidth=0.5)
-    print(np.max(bin_counts))
-    mad = get_MAD(pick)
-    bl = np.mean(file_data["special"]["baseline"])
-    print("bl", bl)
-    print("mean: {:.1f}, std: {:.1f}, MAD: {:.1f}".format((np.mean(pick)-bl)/tu_count, np.std(pick), mad))
-    ax.errorbar(x=np.mean(pick), y=10, xerr=mad, marker="o", markersize=7, capsize=5, capthick=2, lw=2, color="tab:orange", label="mean and MAD error")
-    
-    ax.set_ylim(ymin=0)
-    ax.legend()
-
-    _ = ax.set_xlabel("Build time [ms]")
-    disable_top_right_spines(ax)
-
-    # Evolution of mean
-    ax = fig.add_subplot(312)
-    ax.plot(pick, ".", color="black", markersize=2, alpha=0.4)
-    mean = np.zeros(shape=(0))
-    std = np.zeros(shape=(0))
-    for i in range(1, len(pick) + 1):
-        slice = pick[:i]
-        mean = np.append(mean, np.mean(slice))
-        std = np.append(std, np.std(slice, dtype=np.float64))
-    ax.plot(mean, label="Mean and its std up to that iteration")
-    ax.fill_between(range(len(pick)), mean-std, mean+std, alpha=0.1, color="blue")
-
-    _ = ax.set_xlabel("Iteration")
-    _ = ax.set_ylabel("Build time [ms]")
-    ax.set_xlim(0, len(pick))
-    # ax.legend(loc="upper left")
-    disable_top_right_spines(ax)
-    
-    # Evolution of error
-    ax = fig.add_subplot(313)
-    ax.plot(100.0 * std / mean)
-    _ = ax.set_ylabel("Relative std [%]")
-    ax.set_xlim(0, len(pick))
-    disable_top_right_spines(ax)
-
-    fig.tight_layout()
-    fig.savefig("instrumentation.png")
-
-
 if __name__ == "__main__":
     main_plot()
-    instrumentation_plot()
