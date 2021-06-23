@@ -78,7 +78,9 @@ def get_pretty_name(description):
          "nl_json_fwd": "nlohmann/json_fwd.hpp",
          "glm": "glm/glm.hpp",
          "vulkan": "vulkan/vulkan.h",
-         "vulkanhpp": "vulkan/vulkan.hpp"
+         "vulkanhpp": "vulkan/vulkan.hpp",
+         "boost_variant": "boost/variant.hpp",
+         "boost_variant2": "boost/variant2/variant.hpp"
          }
     if description in replacements.keys():
         return replacements[description]
@@ -141,9 +143,6 @@ def main_plot():
     labels = get_labels(raw_labels)
     positions = get_positions(categories, file_data)
 
-    print("baseline std", file_data["special"]["baseline"].std)
-    print("baseline std", file_data["std"]["algorithm"].std)
-
     worst_data = np.empty([0, 2])
     for category in categories:
         worst_data = np.append(worst_data, get_worst(category, file_data), axis=0)
@@ -164,7 +163,7 @@ def main_plot():
             ax.get_yticklabels()[i].set_color("red")
 
     ax.grid(axis='x', alpha=0.2)
-    ax.get_yaxis().set_tick_params(pad=130)
+    ax.get_yaxis().set_tick_params(pad=160)
     ax.get_yaxis().set_tick_params(length=0)
     ax.set_axisbelow(True)
     ax.spines["right"].set_visible(False)

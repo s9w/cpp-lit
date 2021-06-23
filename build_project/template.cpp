@@ -416,16 +416,20 @@ import std.threading;
 import std.core;
 #endif
 
+#ifdef i_boost_asio
+#include <boost/asio.hpp>
+#endif
+
+#ifdef i_boost_json
+#include <boost/json/src.hpp>
+#endif
+
+#ifdef i_boost_variant
+#include <boost/variant.hpp>
+#endif
+
 #ifdef i_boost_variant2
 #include <boost/variant2/variant.hpp>
-#endif
-
-#ifdef i_boost_optional
-#include <boost/optional/optional.hpp>
-#endif
-
-#ifdef i_boost_any
-#include <boost/any.hpp>
 #endif
 
 

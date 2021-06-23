@@ -3,6 +3,7 @@ $vcvars_dir = "C:\Program Files (x86)\Microsoft Visual Studio\2019\Preview\VC\Au
 $vcpkg_dir = "C:\inc\vcpkg-master"
 $tracy_dir = "..\common_libs\tracy"
 $vulkan_dir = "C:\VulkanSDK\1.2.162.1\Include"
+$boost_dir = "C:\boost_1_76_0"
 
 
 function Invoke-CmdScript {
@@ -25,7 +26,7 @@ if((-Not (Test-Path env:cpp_lit_invoked_vcvars)) -And (-Not $env:cpp_lit_invoked
 }
 
 
-$include_statement = "/I" + $vcpkg_dir + "\installed\x64-windows\include " + "/I" + $tracy_dir + " /I" + $vulkan_dir + " "
+$include_statement = "/I" + $vcpkg_dir + "\installed\x64-windows\include " + "/I" + $tracy_dir + " /I" + $vulkan_dir + " /I" + $boost_dir + " "
 
 function Setup-Tus{
    Param(
@@ -92,7 +93,6 @@ function Invoke-Meas{
 }
 
 # $std_headers = "algorithm","any","array","atomic","barrier","bit","bitset","cassert","cctype","cerrno","cfenv","cfloat","charconv","chrono","cinttypes","climits","clocale","cmath","compare","complex","concepts","condition_variable","coroutine","csetjmp","csignal","cstdarg","cstddef","cstdint","cstdio","cstdlib","cstring","ctime","cuchar","cwchar","cwctype","deque","exception","execution","filesystem","format","forward_list","fstream","functional","future","initializer_list","iomanip","ios","iosfwd","iostream","istream","iterator","latch","limits","list","locale","map","memory","memory_resource","mutex","new","numbers","numeric","optional","ostream","queue","random","ranges","ratio","regex","scoped_allocator","semaphore","set","shared_mutex","source_location","span","sstream","stack","stdexcept","stop_token","streambuf","string","string_view","syncstream","system_error","thread","tuple","type_traits","typeindex","typeinfo","unordered_map","unordered_set","utility","valarray","variant","vector","version"
-$std_headers = "barrier","bit","compare","concepts","format","latch","numbers","ranges","source_location","span","stop_token","syncstream","version"
 
 $std_modules = "std_regex","std_filesystem","std_memory","std_threading","std_core"
 # $boost_headers = "boost_variant2"
@@ -102,14 +102,19 @@ $third_party_libs = @()
 # $third_party_libs += "windows","windows_mal"
 # $third_party_libs += "tracy"
 # $third_party_libs += "vulkan"
-$third_party_libs += "vulkanhpp"
+# $third_party_libs += "vulkanhpp"
 # $third_party_libs += "spdlog"
 # $third_party_libs += "fmt"
 # $third_party_libs += "imgui"
 # $third_party_libs += "nl_json_fwd","nl_json"
 # $third_party_libs += "ned14_outcome"
 # $third_party_libs += "glm"
+
+$third_party_libs += "boost_json"
+# $third_party_libs += "boost_variant"
 # $third_party_libs += "boost_variant2"
+# $third_party_libs += "boost_asio"
+
 
 # Clean measurements output dir
 # if(Test-Path measurements){
