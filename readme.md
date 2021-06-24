@@ -13,7 +13,7 @@ The numbers are measured with care, but are easy to misinterpret. Note:
 
 - When compiling a project with **multiple translation units** and with [`/MP` enabled](https://docs.microsoft.com/en-us/cpp/build/reference/mp-build-with-multiple-processes), MSVC compiles TUs in parallel. In such cases, the include times above can be misleading. Example: the time for one `<regex>` is around half a second for one thread. During that half second, the other n-1 cores can compile other translation units, reducing the actual added include time to about *t*/*n*, with *t* being the include time as listed and *n* being the number of threads compiling.
 
-- Especially with some of the **third party libraries**, the situation is more complex than can be summarized with a single value. Some libraries offer different versions with better compile performance, like [spdlog](https://github.com/gabime/spdlog), which explicitly recommends against the use of the single-header version which was used here. Others like [glm](https://github.com/g-truc/glm) are modularized: I used the heavy `glm.hpp` - using a smaller subset *will* be faster. This was done for simplicity and not to portray any of those libraries in a bad light.
+- Especially with some of the **third party libraries**, the situation is more complex than can be summarized with a single value. Some libraries offer different versions with better compile performance, like [spdlog](https://github.com/gabime/spdlog), which explicitly recommends against the use of the single-header version which was used here. Others like [GLM](https://github.com/g-truc/glm) are modularized: I used the heavy `glm.hpp` - using a smaller subset *will* be faster. This was done for simplicity and not to portray any of those libraries in a bad light.
 
 - There is no use of PCH, header units or any form of caching. The tests were done on a fast SSD and a Ryzen 3800X. All tests were done with a warmup phase and on an otherwise idle system, so real-world numbers will probably come down higher than this.
 
@@ -26,12 +26,12 @@ The numbers are measured with care, but are easy to misinterpret. Note:
 #include <windows.h>
 ```
 
-- [tracy](https://github.com/wolfpld/tracy) v0.7.8, obviously with the `TRACY_ENABLE` define.
+- [Tracy](https://github.com/wolfpld/tracy) v0.7.8, obviously with the `TRACY_ENABLE` define.
 - [spdlog](https://github.com/gabime/spdlog) v1.8.5 using header-only version with only `spdlog.h` included. Note that the readme recommends to use the static lib version instead for faster compile times.
-- [fmt](https://github.com/fmtlib/fmt) v7.1.3 including only `fmt/core.h`.
+- [{fmt}](https://github.com/fmtlib/fmt) v7.1.3 including only `fmt/core.h`.
 - [JSON for Modern C++](https://github.com/nlohmann/json) v3.9.1. Note that this is split into the main header (nl_json - `json.hpp`) and the forward include header (nl_json_fwd - `json_fwd.hpp`). The latter is what you would include more often.
-- [glm](https://github.com/g-truc/glm) v0.9.9.8. glm is very modular, this measures the include of `glm.hpp` - which might be on the larger side of what you would typically include.
-- [Vulkan.h](https://www.lunarg.com/vulkan-sdk/) from SDK v1.2.162.1.
+- [GLM](https://github.com/g-truc/glm) v0.9.9.8. GLM is modular, this repo measures the include of `glm.hpp` - which might be more than what would typically include.
+- [vulkan.h](https://www.lunarg.com/vulkan-sdk/) and `vulkan.hpp` (not to be confused!) from Vulkan SDK v1.2.162.1.
 - All boost libraries are v1.76.0. Note that [Boost.JSON](https://www.boost.org/doc/libs/1_76_0/libs/json/doc/html/index.html) is being measured in its header-only mode.
 
 ## Methodology
