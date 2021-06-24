@@ -92,28 +92,23 @@ function Invoke-Meas{
    Write-Host ""
 }
 
-# $std_headers = "algorithm","any","array","atomic","barrier","bit","bitset","cassert","cctype","cerrno","cfenv","cfloat","charconv","chrono","cinttypes","climits","clocale","cmath","compare","complex","concepts","condition_variable","coroutine","csetjmp","csignal","cstdarg","cstddef","cstdint","cstdio","cstdlib","cstring","ctime","cuchar","cwchar","cwctype","deque","exception","execution","filesystem","format","forward_list","fstream","functional","future","initializer_list","iomanip","ios","iosfwd","iostream","istream","iterator","latch","limits","list","locale","map","memory","memory_resource","mutex","new","numbers","numeric","optional","ostream","queue","random","ranges","ratio","regex","scoped_allocator","semaphore","set","shared_mutex","source_location","span","sstream","stack","stdexcept","stop_token","streambuf","string","string_view","syncstream","system_error","thread","tuple","type_traits","typeindex","typeinfo","unordered_map","unordered_set","utility","valarray","variant","vector","version"
+$std_headers = "algorithm","any","array","atomic","barrier","bit","bitset","cassert","cctype","cerrno","cfenv","cfloat","charconv","chrono","cinttypes","climits","clocale","cmath","compare","complex","concepts","condition_variable","coroutine","csetjmp","csignal","cstdarg","cstddef","cstdint","cstdio","cstdlib","cstring","ctime","cuchar","cwchar","cwctype","deque","exception","execution","filesystem","format","forward_list","fstream","functional","future","initializer_list","iomanip","ios","iosfwd","iostream","istream","iterator","latch","limits","list","locale","map","memory","memory_resource","mutex","new","numbers","numeric","optional","ostream","queue","random","ranges","ratio","regex","scoped_allocator","semaphore","set","shared_mutex","source_location","span","sstream","stack","stdexcept","stop_token","streambuf","string","string_view","syncstream","system_error","thread","tuple","type_traits","typeindex","typeinfo","unordered_map","unordered_set","utility","valarray","variant","vector","version"
 
 $std_modules = "std_regex","std_filesystem","std_memory","std_threading","std_core"
-# $boost_headers = "boost_variant2"
-# $boost_headers = "boost_variant2","boost_optional","boost_any"
 
 $third_party_libs = @()
-# $third_party_libs += "windows","windows_mal"
-# $third_party_libs += "tracy"
-# $third_party_libs += "vulkan"
-# $third_party_libs += "vulkanhpp"
-# $third_party_libs += "spdlog"
-# $third_party_libs += "fmt"
-# $third_party_libs += "imgui"
-# $third_party_libs += "nl_json_fwd","nl_json"
-# $third_party_libs += "ned14_outcome"
-# $third_party_libs += "glm"
+$third_party_libs += "windows","windows_mal"
+$third_party_libs += "tracy"
+$third_party_libs += "vulkan"
+$third_party_libs += "vulkanhpp"
+$third_party_libs += "spdlog"
+$third_party_libs += "fmt"
+$third_party_libs += "nl_json_fwd","nl_json"
+$third_party_libs += "glm"
 
 $third_party_libs += "boost_json"
-# $third_party_libs += "boost_variant"
-# $third_party_libs += "boost_variant2"
-# $third_party_libs += "boost_asio"
+$third_party_libs += "boost_variant"
+$third_party_libs += "boost_variant2"
 
 
 # Clean measurements output dir
@@ -131,23 +126,22 @@ Setup-Tus -tu_count 10
 # Invoke-Meas -description "std" -inc "filesystem" -repeats 40 -defines @("no_std", "i_filesystem") -tu_count 1
 # Invoke-Meas -description "std" -inc "filesystem" -repeats 40 -defines @("no_std", "i_filesystem") -tu_count 1
 
-Invoke-Meas -description "warmup" -inc "warmup" -repeats 20 -defines @() -tu_count 10
-# Invoke-Meas -description "special" -inc "baseline" -repeats 10 -defines @() -tu_count 10
-# Invoke-Meas -description "special" -inc "baseline" -repeats 10 -defines @("i_all_std") -tu_count 1
+Invoke-Meas -description "warmup" -inc "warmup" -repeats 40 -defines @() -tu_count 10
+Invoke-Meas -description "special" -inc "baseline" -repeats 40 -defines @() -tu_count 10
 
 $normal_repeat_n = 10
 
 
 
-# Foreach($header in $std_headers){
-#    $def = "i_{0}" -f $header
-#    Invoke-Meas -description "std" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
-# }
+Foreach($header in $std_headers){
+   $def = "i_{0}" -f $header
+   Invoke-Meas -description "std" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
+}
 
-# Foreach($header in $std_modules){
-#    $def = "i_{0}" -f $header
-#    Invoke-Meas -description "std_modules" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
-# }
+Foreach($header in $std_modules){
+   $def = "i_{0}" -f $header
+   Invoke-Meas -description "std_modules" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
+}
 
 
 Foreach($header in $third_party_libs){

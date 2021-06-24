@@ -421,7 +421,9 @@ import std.core;
 #endif
 
 #ifdef i_boost_json
-#include <boost/json/src.hpp>
+#define BOOST_CONTAINER_NO_LIB
+#define BOOST_JSON_NO_LIB
+#include <boost/json.hpp>
 #endif
 
 #ifdef i_boost_variant
@@ -473,10 +475,6 @@ import std.core;
 
 #ifdef i_glm
 #include <glm/glm.hpp>
-#endif
-
-#ifdef i_doctest
-#include <doctest/doctest.h>
 #endif
 
 #ifdef i_vulkan

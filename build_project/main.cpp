@@ -1,5 +1,6 @@
-#define DOCTEST_CONFIG_IMPLEMENT
-#include <doctest/doctest.h>
+#define BOOST_CONTAINER_NO_LIB
+#define BOOST_JSON_NO_LIB
+#include <boost/json/src.hpp>
 
 
 int main() {
