@@ -1,7 +1,8 @@
 # C++ Library Include Times (CPP-LIT :fire:)
 This repo answers the question: how much time is added to my compile time by a single inclusion of `<header>`? Featuring *all* C++ Standard Library headers, their C++20 [module versions](https://docs.microsoft.com/en-us/cpp/cpp/modules-cpp?view=vs-2019), `windows.h` and a couple of other third party libraries. All times are for Visual Studio 2019 16.11.0 Preview 2.0. The red entries are new C++20 headers.
 
-![results](lit.png)
+![results](https://user-images.githubusercontent.com/6044318/123281786-404b5480-d50a-11eb-8023-35ac2415e220.png)
+
 
 ## Interpretation & notes
 The numbers are measured with care, but are easy to misinterpret. Note:
