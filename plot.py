@@ -81,7 +81,10 @@ def get_pretty_name(description):
          "vulkanhpp": "vulkan/vulkan.hpp",
          "boost_json": "boost/json.hpp",
          "boost_variant": "boost/variant.hpp",
-         "boost_variant2": "boost/variant2/variant.hpp"
+         "boost_variant2": "boost/variant2/variant.hpp",
+         "stb_image": "stb_image.h",
+         "stb_image_write": "stb_image_write.h",
+         "entt": "entt/entt.hpp"
          }
     if description in replacements.keys():
         return replacements[description]

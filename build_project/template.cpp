@@ -484,3 +484,15 @@ import std.core;
 #ifdef i_vulkanhpp
 #include <vulkan/vulkan.hpp>
 #endif
+
+#ifdef i_stb_image
+#include <stb_image.h>
+#endif
+
+#ifdef i_stb_image_write
+#include <stb_image_write.h>
+#endif
+
+#ifdef i_entt
+#include <entt/entt.hpp>
+#endif

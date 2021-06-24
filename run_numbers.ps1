@@ -97,18 +97,21 @@ $std_headers = "algorithm","any","array","atomic","barrier","bit","bitset","cass
 $std_modules = "std_regex","std_filesystem","std_memory","std_threading","std_core"
 
 $third_party_libs = @()
-$third_party_libs += "windows","windows_mal"
-$third_party_libs += "tracy"
-$third_party_libs += "vulkan"
-$third_party_libs += "vulkanhpp"
-$third_party_libs += "spdlog"
-$third_party_libs += "fmt"
-$third_party_libs += "nl_json_fwd","nl_json"
-$third_party_libs += "glm"
+# $third_party_libs += "windows","windows_mal"
+# $third_party_libs += "tracy"
+# $third_party_libs += "vulkan"
+# $third_party_libs += "vulkanhpp"
+# $third_party_libs += "spdlog"
+# $third_party_libs += "fmt"
+# $third_party_libs += "nl_json_fwd","nl_json"
+# $third_party_libs += "glm"
+# $third_party_libs += "stb_image"
+# $third_party_libs += "stb_image_write"
+$third_party_libs += "entt"
 
-$third_party_libs += "boost_json"
-$third_party_libs += "boost_variant"
-$third_party_libs += "boost_variant2"
+# $third_party_libs += "boost_json"
+# $third_party_libs += "boost_variant"
+# $third_party_libs += "boost_variant2"
 
 
 # Clean measurements output dir
@@ -127,21 +130,21 @@ Setup-Tus -tu_count 10
 # Invoke-Meas -description "std" -inc "filesystem" -repeats 40 -defines @("no_std", "i_filesystem") -tu_count 1
 
 Invoke-Meas -description "warmup" -inc "warmup" -repeats 40 -defines @() -tu_count 10
-Invoke-Meas -description "special" -inc "baseline" -repeats 40 -defines @() -tu_count 10
+# Invoke-Meas -description "special" -inc "baseline" -repeats 40 -defines @() -tu_count 10
 
 $normal_repeat_n = 10
 
 
 
-Foreach($header in $std_headers){
-   $def = "i_{0}" -f $header
-   Invoke-Meas -description "std" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
-}
+# Foreach($header in $std_headers){
+#    $def = "i_{0}" -f $header
+#    Invoke-Meas -description "std" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
+# }
 
-Foreach($header in $std_modules){
-   $def = "i_{0}" -f $header
-   Invoke-Meas -description "std_modules" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
-}
+# Foreach($header in $std_modules){
+#    $def = "i_{0}" -f $header
+#    Invoke-Meas -description "std_modules" -inc $header -repeats $normal_repeat_n -defines @($def) -tu_count 10
+# }
 
 
 Foreach($header in $third_party_libs){

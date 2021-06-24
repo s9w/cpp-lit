@@ -1,8 +1,7 @@
 # C++ Library Include Times (CPP-LIT :fire:)
 This repo answers the question: how much time is added to my compile time by a single inclusion of `<header>`? Featuring *all* C++ Standard Library headers, their C++20 [module versions](https://docs.microsoft.com/en-us/cpp/cpp/modules-cpp?view=vs-2019), `windows.h` and a couple of other third party libraries. All times are for Visual Studio 2019 16.11.0 Preview 2.0. The red entries are new C++20 headers.
 
-![results](https://user-images.githubusercontent.com/6044318/123281786-404b5480-d50a-11eb-8023-35ac2415e220.png)
-
+![results](https://user-images.githubusercontent.com/6044318/123288736-201e9400-d510-11eb-9cc5-c0fb2e1b884c.png)
 
 ## Interpretation & notes
 The numbers are measured with care, but are easy to misinterpret. Note:
@@ -33,6 +32,8 @@ The numbers are measured with care, but are easy to misinterpret. Note:
 - [GLM](https://github.com/g-truc/glm) v0.9.9.8. GLM is modular, this repo measures the include of `glm.hpp` - which might be more than what would typically include.
 - [vulkan.h](https://www.lunarg.com/vulkan-sdk/) and `vulkan.hpp` (not to be confused!) from Vulkan SDK v1.2.162.1.
 - All boost libraries are v1.76.0. Note that [Boost.JSON](https://www.boost.org/doc/libs/1_76_0/libs/json/doc/html/index.html) is being measured in its header-only mode.
+- [stb](https://github.com/nothings/stb) headers are from 2020-09-14.
+- [EnTT](https://github.com/skypjack/entt) v3.5.0.
 
 ## Methodology
 All reported times are based on release builds. The complete compile command without includes is:
