@@ -70,7 +70,7 @@ def get_pretty_name(description):
     replacements = {
         "windows": "windows.h",
          "windows_mal": "windows.h [LAM]",
-         "tracy": "Tracy.cpp",
+         "tracy": "Tracy.hpp",
          "doctest": "doctest/doctest.h",
          "spdlog": "spdlog/spdlog.h",
          "fmt": "fmt/core.h",
